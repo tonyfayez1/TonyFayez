@@ -19,17 +19,22 @@
       background-position: center top;
       background-attachment: fixed;
     }
-    .report-table th, .report-table td {
-      border: 1px solid #15803d;
-      padding: 5px 6px;
-      text-align: center;
-      font-size: 11px;
+   .report-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      direction: rtl !important;
     }
-    .month-report-table th, .month-report-table td {
-      border: 1px solid #047857;
-      padding: 4px 6px;
-      text-align: center;
-      font-size: 10px;
+    .report-table th, .report-table td {
+      border: 1px solid #15803d !important;
+      padding: 6px 8px !important;
+      text-align: center !important;
+      font-size: 11px !important;
+      color: #000000 !important;
+      line-height: 1.4 !important;
+    }
+    .report-table tr {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
     }
   </style>
 </head>
