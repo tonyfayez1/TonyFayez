@@ -562,42 +562,43 @@
       <p id="loginFeedback" class="text-xs text-center text-red-400 min-h-[16px]"></p>
     </div>
   </div>
-
-  <!-- ================= حاويات الـ PDF ================= -->
-  <div class="pdf-source-wrapper" style="display: none;">
+<!-- ================= حاويات تقارير الـ PDF الموحدة ================= -->
+  <div id="pdfExportWrapper" style="display: none; position: fixed; top: 0; left: 0; z-index: 999998; background: #ffffff; direction: ltr; margin: 0; padding: 0;">
     
     <!-- 1. حاوية التقرير اليومي PDF -->
-    <div id="pdfContainer" style="width: 720px; padding: 20px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif;">
-      <div style="display: flex; margin-bottom: 2px; direction: ltr;">
-        <div style="background-color: #fef08a; padding: 8px 12px; width: 60%; font-weight: bold; font-size: 15px; border: 1px solid #ca8a04;">
+    <div id="pdfContainer" style="width: 710px; box-sizing: border-box; padding: 10px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif; margin: 0;">
+      <!-- صف الترويسة 1 -->
+      <div style="display: flex; margin-bottom: 2px; direction: ltr; width: 100%;">
+        <div style="background-color: #fef08a; padding: 6px 10px; width: 60%; font-weight: bold; font-size: 14px; border: 1px solid #ca8a04; box-sizing: border-box; text-align: left;">
           Daily Attendance Report
         </div>
-        <div id="pdfDateBox" style="background-color: #bbf7d0; padding: 8px 12px; width: 40%; font-weight: bold; font-size: 13px; text-align: right; border: 1px solid #16a34a;">
+        <div id="pdfDateBox" style="background-color: #bbf7d0; padding: 6px 10px; width: 40%; font-weight: bold; font-size: 12px; text-align: right; border: 1px solid #16a34a; border-left: none; box-sizing: border-box;">
           Date: --/--/----
         </div>
       </div>
-      <div style="display: flex; margin-bottom: 8px; direction: rtl;">
-        <div id="pdfPrintTime" style="background-color: #fef08a; padding: 5px 10px; width: 34%; font-size: 11px; border: 1px solid #ca8a04; border-top: none; text-align: right;">
+      <!-- صف الترويسة 2 -->
+      <div style="display: flex; margin-bottom: 8px; direction: ltr; width: 100%;">
+        <div id="pdfPrintTime" style="background-color: #fef08a; padding: 5px 8px; width: 34%; font-size: 10px; border: 1px solid #ca8a04; border-top: none; box-sizing: border-box; text-align: left;">
           Print Time: --:--
         </div>
-        <div id="pdfServiceCountBox" style="background-color: #bbf7d0; padding: 5px 10px; width: 33%; font-size: 11px; font-weight: bold; text-align: center; border: 1px solid #16a34a; border-top: none;">
+        <div id="pdfServiceCountBox" style="background-color: #bbf7d0; padding: 5px 8px; width: 33%; font-size: 10px; font-weight: bold; text-align: center; border: 1px solid #16a34a; border-top: none; border-left: none; box-sizing: border-box;">
           حضور الخدمة: 0 (0%)
         </div>
-        <div id="pdfMeetingCountBox" style="background-color: #fef08a; padding: 5px 10px; width: 33%; font-size: 11px; font-weight: bold; text-align: center; border: 1px solid #ca8a04; border-top: none;">
+        <div id="pdfMeetingCountBox" style="background-color: #bbf7d0; padding: 5px 8px; width: 33%; font-size: 10px; font-weight: bold; text-align: center; border: 1px solid #16a34a; border-top: none; border-left: none; box-sizing: border-box;">
           حضور الاجتماع: 0 (0%)
         </div>
       </div>
       <table class="report-table" style="width: 100%; border-collapse: collapse; direction: rtl;">
         <thead>
           <tr style="background-color: #15803d; color: white;">
-            <th style="width: 35px;">مسلسل</th>
-            <th style="width: 45px;">الكود</th>
+            <th style="width: 32px;">مسلسل</th>
+            <th style="width: 42px;">الكود</th>
             <th>الاسم</th>
-            <th style="width: 90px;">الفصل</th>
-            <th style="width: 55px;">حضور الخدمة</th>
-            <th style="width: 50px;">توقيت الخدمة</th>
-            <th style="width: 55px;">اجتماع الخدام</th>
-            <th style="width: 50px;">ملاحظات</th>
+            <th style="width: 85px;">الفصل</th>
+            <th style="width: 75px;">حضور الخدمة</th>
+            <th style="width: 75px;">توقيت الخدمة</th>
+            <th style="width: 75px;">اجتماع الخدام</th>
+            <th style="width: 70px;">ملاحظات</th>
           </tr>
         </thead>
         <tbody id="pdfTableBody"></tbody>
@@ -605,11 +606,11 @@
     </div>
 
     <!-- 2. حاوية التقرير الشهري PDF -->
-    <div id="monthlyPdfContainer" style="width: 750px; padding: 20px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif;">
-      <div style="background-color: #047857; color: white; padding: 10px 14px; font-weight: bold; font-size: 16px; text-align: center; border-radius: 4px; margin-bottom: 8px;">
+    <div id="monthlyPdfContainer" style="width: 980px; box-sizing: border-box; padding: 14px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif; margin: 0;">
+      <div style="background-color: #047857; color: white; padding: 8px 12px; font-weight: bold; font-size: 15px; text-align: center; border-radius: 4px; margin-bottom: 6px;">
         كنيسة الشهيد العظيم مارمينا - تقرير حضور الخدام الشهري
       </div>
-      <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 10px; border-bottom: 2px solid #047857; padding-bottom: 4px;">
+      <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 8px; border-bottom: 2px solid #047857; padding-bottom: 4px;">
         <span id="monthlyPdfMonthLabel">الشهر: --</span>
         <span id="monthlyPdfMeetingsCount">عدد الاجتماعات المسجلة: 0</span>
         <span id="monthlyPdfPrintTime">تاريخ الطباعة: --</span>
@@ -620,7 +621,7 @@
             <th style="width: 30px;">م</th>
             <th style="width: 40px;">الكود</th>
             <th>الاسم</th>
-            <th style="width: 90px;">الفصل</th>
+            <th style="width: 85px;">الفصل</th>
             <th style="width: 55px;">الخدمة</th>
             <th style="width: 50px;">نسبة الخدمة</th>
             <th style="width: 55px;">الاجتماع</th>
@@ -633,11 +634,11 @@
     </div>
 
     <!-- 3. حاوية تقرير خادم محدد PDF -->
-    <div id="singleServantPdfContainer" style="width: 700px; padding: 20px; background: white; color: black; direction: ltr;">
-      <div style="background-color: #047857; color: white; padding: 10px; font-weight: bold; font-size: 15px; text-align: center; border-radius: 4px; margin-bottom: 6px;">
+    <div id="singleServantPdfContainer" style="width: 710px; box-sizing: border-box; padding: 10px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif; margin: 0;">
+      <div style="background-color: #047857; color: white; padding: 8px; font-weight: bold; font-size: 14px; text-align: center; border-radius: 4px; margin-bottom: 6px;">
         كنيسة الشهيد العظيم مارمينا - تقرير حضور وغياب خادم
       </div>
-      <div style="background-color: #f0fdf4; border: 1px solid #16a34a; padding: 8px 12px; margin-bottom: 10px; font-size: 11px; direction: rtl; text-align: right;">
+      <div style="background-color: #f0fdf4; border: 1px solid #16a34a; padding: 8px 12px; margin-bottom: 8px; font-size: 11px; direction: rtl; text-align: right;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span><b>اسم الخادم:</b> <span id="pdfSingleServantName">--</span></span>
           <span><b>الكود:</b> <span id="pdfSingleServantCode">--</span></span>
@@ -645,24 +646,25 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
           <span><b>الفترة:</b> من <span id="pdfSingleServantFrom">--</span> إلى <span id="pdfSingleServantTo">--</span></span>
-          <span id="pdfSingleServantPct">--</span>
+          <span><b>نسبة الالتزام:</b> <span id="pdfSingleServantPct">0%</span> (الخدمة: <span id="pdfSingleServantPCount">0</span> | الاجتماع: <span id="pdfSingleServantACount">0</span>)</span>
         </div>
       </div>
       <table class="report-table" style="width: 100%; border-collapse: collapse; direction: rtl;">
         <thead>
           <tr style="background-color: #15803d; color: white;">
-            <th style="width: 40px;">م</th>
-            <th>تاريخ الاجتماع / الخدمة</th>
-            <th style="width: 95px;">حضور الخدمة</th>
-            <th style="width: 95px;">توقيت الخدمة</th>
-            <th style="width: 95px;">اجتماع الخدام</th>
-            <th style="width: 100px;">ملاحظات</th>
+            <th style="width: 35px;">م</th>
+            <th style="width: 85px;">التاريخ</th>
+            <th style="width: 90px;">حضور الخدمة</th>
+            <th style="width: 85px;">توقيت الخدمة</th>
+            <th style="width: 85px;">اجتماع الخدام</th>
+            <th>ملاحظات</th>
           </tr>
         </thead>
         <tbody id="singleServantPdfTableBody"></tbody>
       </table>
     </div>
 
+  
   </div>
 
   <!-- البرمجة والربط بـ Firebase -->
@@ -1430,8 +1432,7 @@
       });
     };
 
-    // دالة تصدير الـ PDF بدون قص وبدون صفحة بيضاء
-    async function generatePdfFromElement(elementId, filename, isLandscape = false) {
+async function generatePdfFromElement(elementId, filename, isLandscape = false) {
       const element = document.getElementById(elementId);
       if (!element) {
         alert("لم يتم العثور على جدول التقرير!");
@@ -1448,24 +1449,36 @@
       }
       overlay.style.display = "flex";
 
-      const wrapper = document.querySelector(".pdf-source-wrapper");
+      const wrapper = document.getElementById("pdfExportWrapper");
+      const targetWidth = isLandscape ? 980 : 710;
+
       if (wrapper) {
         wrapper.style.display = "block";
         wrapper.style.position = "fixed";
         wrapper.style.top = "0";
         wrapper.style.left = "0";
-        wrapper.style.width = isLandscape ? "1050px" : "780px";
+        wrapper.style.width = (targetWidth + 20) + "px";
         wrapper.style.zIndex = "999998";
         wrapper.style.background = "#ffffff";
-        wrapper.style.opacity = "1";
+        wrapper.style.direction = "ltr";
       }
 
       ['pdfContainer', 'monthlyPdfContainer', 'singleServantPdfContainer'].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.style.display = (id === elementId) ? "block" : "none";
+        if (el) {
+          el.style.display = (id === elementId) ? "block" : "none";
+          el.style.direction = "rtl";
+          el.style.margin = "0";
+          el.style.width = targetWidth + "px";
+        }
       });
 
-      await new Promise(resolve => setTimeout(resolve, 300));
+      const origHtmlDir = document.documentElement.getAttribute("dir") || "rtl";
+      const origBodyDir = document.body.getAttribute("dir") || "rtl";
+      document.documentElement.setAttribute("dir", "ltr");
+      document.body.setAttribute("dir", "ltr");
+
+      await new Promise(resolve => setTimeout(resolve, 350));
 
       const opt = {
         margin: [6, 6, 6, 6],
@@ -1476,7 +1489,9 @@
           useCORS: true,
           scrollY: 0,
           scrollX: 0,
-          windowWidth: isLandscape ? 1100 : 850
+          x: 0,
+          y: 0,
+          width: targetWidth
         },
         jsPDF: {
           unit: "mm",
@@ -1486,15 +1501,17 @@
         pagebreak: { mode: ["avoid-all", "css", "legacy"] }
       };
 
-      html2pdf().set(opt).from(element).save().then(() => {
-        if (wrapper) wrapper.style.display = "none";
-        overlay.style.display = "none";
-      }).catch(err => {
+      try {
+        await html2pdf().set(opt).from(element).save();
+      } catch (err) {
         console.error("PDF error:", err);
+        alert("حدث خطأ أثناء استخراج الـ PDF: " + err.message);
+      } finally {
+        document.documentElement.setAttribute("dir", origHtmlDir);
+        document.body.setAttribute("dir", origBodyDir);
         if (wrapper) wrapper.style.display = "none";
         overlay.style.display = "none";
-        alert("حدث خطأ أثناء استخراج الـ PDF: " + err.message);
-      });
+      }
     }
 
     // 1. تقرير اليوم PDF (شامل الخدمة واجتماع الخدام والنسب)
