@@ -12,7 +12,6 @@
 
   <style>
     body { font-family: 'Cairo', sans-serif; }
-    /* خلفية كنيسة مارمينا والبابا كيرلس */
     .church-bg {
       background-image: linear-gradient(rgba(10, 25, 15, 0.70), rgba(10, 25, 15, 0.78)), 
                         url('1790832688461.jpeg'),
@@ -95,20 +94,25 @@
     <!-- 1. واجهة الخدام العامة المتاحة للجميع أونلاين -->
     <section id="publicServantView" class="space-y-6">
       
+      <!-- أزرار التبويبات العلوية الثلاثة في وش الشاشة -->
       <div class="flex justify-center">
-        <div class="bg-black/50 p-1.5 rounded-xl border border-green-600/40 inline-flex gap-2">
+        <div class="bg-black/50 p-1.5 rounded-xl border border-green-600/40 inline-flex flex-wrap justify-center gap-2">
           <button onclick="switchPublicTab('checkin')" id="tabBtnCheckin" 
-                  class="px-5 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow">
-            ✅ تسجيل حضوري اليوم
+                  class="px-4 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow transition">
+            ✅ تسجيل حضور الخدمة
+          </button>
+          <button onclick="switchPublicTab('meeting')" id="tabBtnMeeting" 
+                  class="px-4 py-2 rounded-lg font-bold text-sm text-amber-300 hover:text-white bg-amber-950/40 border border-amber-600/30 transition">
+            🤝 حضور اجتماع الخدام
           </button>
           <button onclick="switchPublicTab('register')" id="tabBtnRegister" 
-                  class="px-5 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white">
+                  class="px-4 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white transition">
             📝 أنا خادم جديد (تسجيل بياناتي)
           </button>
         </div>
       </div>
 
-      <!-- تبويب تسجيل الحضور اليومي للخادم (حضور الخدمة) -->
+      <!-- تبويب 1: تسجيل حضور الخدمة الصباحية -->
       <div id="checkinTab" class="bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 shadow-2xl max-w-xl mx-auto text-center space-y-4">
         <h2 class="text-xl font-bold text-amber-200">تسجيل حضور الخدمة</h2>
         <p id="publicTimeWindowInfo" class="text-xs text-gray-300">جاري تحميل مواعيد التسجيل...</p>
@@ -125,9 +129,50 @@
           </button>
         </div>
         <p id="checkinFeedback" class="text-sm font-semibold min-h-[24px]"></p>
+
+        <!-- كومبو بوكس سريع لحضور اجتماع الخدام داخل نفس الكارت مباشرة -->
+        <div class="mt-4 pt-3 border-t border-gray-700/80">
+          <div class="flex items-center justify-between cursor-pointer select-none bg-black/40 p-2.5 rounded-xl border border-amber-500/40 hover:bg-black/60 transition" onclick="toggleMeetingAccordion()">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">🤝</span>
+              <span class="text-xs font-bold text-amber-200">حضور اجتماع الخدام (اختياري)</span>
+            </div>
+            <span id="meetingToggleLabel" class="text-[11px] bg-amber-600/40 text-amber-300 px-2.5 py-0.5 rounded-lg font-bold">
+              ▼ اضغط لتسجيل كودك
+            </span>
+          </div>
+
+          <div id="meetingAccordionContent" class="hidden mt-3 p-3 bg-black/50 rounded-xl border border-amber-500/30 space-y-2 text-right">
+            <p class="text-[11px] text-gray-300">تسجيل مخصص لاجتماع الخدام فقط (بدون ساعة أو توقيت - يظهر للأمين لتأكيد الحضور).</p>
+            <div class="flex gap-2">
+              <input type="number" id="meetingServantCodeInput" placeholder="أدخل كودك القديم..." 
+                     class="flex-1 p-2 bg-black/70 border border-amber-500/50 rounded-lg text-center text-sm font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
+              <button onclick="servantMeetingCheckIn()" 
+                      class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg transition text-xs shadow">
+                تأكيد حضور الاجتماع
+              </button>
+            </div>
+            <p id="meetingFeedback" class="text-xs text-center font-semibold min-h-[16px]"></p>
+          </div>
+        </div>
       </div>
 
-      <!-- تبويب تسجيل خادم جديد -->
+      <!-- تبويب 2: صفحة مخصصة كاملة لحضور اجتماع الخدام -->
+      <div id="meetingTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-amber-500/40 shadow-2xl max-w-xl mx-auto text-center space-y-4">
+        <h2 class="text-xl font-bold text-amber-200">تسجيل حضور اجتماع الخدام</h2>
+        <p class="text-xs text-gray-300">تسجيل مخصص لاجتماع الخدام فقط (بدون ساعات أو تفاصيل، يظهر بالاسم والكود للأمين لتأكيد الحضور).</p>
+        <div class="space-y-3 pt-2">
+          <input type="number" id="standaloneMeetingCodeInput" placeholder="أدخل كودك القديم (ID الخاص بك)..." 
+                 class="w-full p-3 bg-black/60 border border-amber-500/50 rounded-xl text-center text-xl font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
+          <button onclick="servantStandaloneMeetingCheckIn()" 
+                  class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-base">
+            تأكيد تسجيل حضور الاجتماع
+          </button>
+        </div>
+        <p id="standaloneMeetingFeedback" class="text-sm font-semibold min-h-[24px]"></p>
+      </div>
+
+      <!-- تبويب 3: تسجيل خادم جديد -->
       <div id="registerTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 shadow-2xl max-w-2xl mx-auto space-y-4">
         <div class="border-b border-gray-700 pb-3">
           <h2 class="text-xl font-bold text-amber-200">استمارة تسجيل خادم جديد</h2>
@@ -176,38 +221,11 @@
         <p id="registerFeedback" class="text-center text-sm font-semibold"></p>
       </div>
 
-      <!-- قسم حضور اجتماع الخدام (اختياري) -->
-      <div class="bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-amber-500/40 shadow-2xl max-w-xl mx-auto space-y-3 text-center">
-        <div class="flex items-center justify-between cursor-pointer select-none" onclick="toggleMeetingAccordion()">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">🤝</span>
-            <h3 class="text-base font-bold text-amber-200">حضور اجتماع الخدام (اختياري)</h3>
-          </div>
-          <span id="meetingToggleLabel" class="text-xs bg-amber-600/30 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-lg font-bold">
-            ▼ اضغط لتسجيل كودك
-          </span>
-        </div>
-
-        <div id="meetingAccordionContent" class="hidden pt-3 border-t border-gray-700/80 space-y-3">
-          <p class="text-xs text-gray-300">تسجيل حضور خاص باجتماع الخدام فقط (بدون توقيت - يظهر بالاسم والكود للأمين لتأكيد الحضور).</p>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <input type="number" id="meetingServantCodeInput" placeholder="أدخل كودك القديم..." 
-                   class="flex-1 p-2.5 bg-black/60 border border-amber-500/50 rounded-xl text-center text-lg font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
-            <button onclick="servantMeetingCheckIn()" 
-                    class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-lg text-sm">
-              تسجيل حضور الاجتماع
-            </button>
-          </div>
-          <p id="meetingFeedback" class="text-xs font-semibold min-h-[18px]"></p>
-        </div>
-      </div>
-
     </section>
 
     <!-- ================= 2. لوحة تحكم الآدمن (المحمية والمخصصة للأمين) ================= -->
     <section id="privateAdminView" class="hidden space-y-6">
       
-      <!-- شريط معلومات الآدمن وقائمة التبويبات -->
       <div class="bg-amber-500/20 border border-amber-500/50 p-4 rounded-xl flex flex-wrap justify-between items-center gap-3 text-amber-200 text-sm">
         <div class="flex items-center gap-2">
           <span class="font-bold">لوحة تحكم أمين الخدمة</span>
@@ -826,17 +844,70 @@
     };
 
     window.switchPublicTab = function(tab) {
+      const checkinTab = document.getElementById('checkinTab');
+      const meetingTab = document.getElementById('meetingTab');
+      const registerTab = document.getElementById('registerTab');
+
+      const btnCheckin = document.getElementById('tabBtnCheckin');
+      const btnMeeting = document.getElementById('tabBtnMeeting');
+      const btnRegister = document.getElementById('tabBtnRegister');
+
+      checkinTab.classList.add('hidden');
+      if (meetingTab) meetingTab.classList.add('hidden');
+      registerTab.classList.add('hidden');
+
+      btnCheckin.className = 'px-4 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white transition';
+      if (btnMeeting) btnMeeting.className = 'px-4 py-2 rounded-lg font-bold text-sm text-amber-300 hover:text-white bg-amber-950/40 border border-amber-600/30 transition';
+      btnRegister.className = 'px-4 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white transition';
+
       if (tab === 'checkin') {
-        document.getElementById('checkinTab').classList.remove('hidden');
-        document.getElementById('registerTab').classList.add('hidden');
-        document.getElementById('tabBtnCheckin').className = 'px-5 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow';
-        document.getElementById('tabBtnRegister').className = 'px-5 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white';
+        checkinTab.classList.remove('hidden');
+        btnCheckin.className = 'px-4 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow transition';
+      } else if (tab === 'meeting') {
+        if (meetingTab) meetingTab.classList.remove('hidden');
+        if (btnMeeting) btnMeeting.className = 'px-4 py-2 rounded-lg font-bold text-sm bg-amber-600 text-white shadow transition';
       } else {
-        document.getElementById('checkinTab').classList.add('hidden');
-        document.getElementById('registerTab').classList.remove('hidden');
-        document.getElementById('tabBtnRegister').className = 'px-5 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow';
-        document.getElementById('tabBtnCheckin').className = 'px-5 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white';
+        registerTab.classList.remove('hidden');
+        btnRegister.className = 'px-4 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow transition';
       }
+    };
+
+    window.servantStandaloneMeetingCheckIn = async function() {
+      const codeVal = parseInt(document.getElementById("standaloneMeetingCodeInput").value);
+      const feedback = document.getElementById("standaloneMeetingFeedback");
+
+      if (!codeVal) {
+        feedback.className = "text-sm font-semibold text-red-400";
+        feedback.innerText = "برجاء كتابة كود الخادم القديم.";
+        return;
+      }
+
+      const servant = allServants.find(s => s.code === codeVal);
+      if (!servant) {
+        feedback.className = "text-sm font-semibold text-red-400";
+        feedback.innerText = "هذا الكود غير موجود بقاعدة البيانات! يرجى التأكد من كودك.";
+        return;
+      }
+
+      const recordId = `${todayStr}_${servant.code}`;
+      const docRef = doc(db, "attendance", recordId);
+      const existing = currentAttendance[servant.code] || {};
+
+      await setDoc(docRef, {
+        date: todayStr,
+        servantCode: servant.code,
+        servantName: servant.name,
+        servantClass: servant.class || "",
+        status: existing.status || "Absent",
+        time: existing.time || "-",
+        notes: existing.notes || "",
+        meetingStatus: "Present"
+      }, { merge: true });
+
+      feedback.className = "text-sm font-semibold text-green-400";
+      feedback.innerText = `تم تسجيل حضور اجتماع الخدام بنجاح للخادم: ${servant.name} (${servant.code})!`;
+      document.getElementById("standaloneMeetingCodeInput").value = "";
+      await loadAttendanceForDate();
     };
 
     window.switchAdminSubTab = function(tab) {
@@ -1359,10 +1430,13 @@
       });
     };
 
-    // دالة تصدير الـ PDF بدون قص ومعالجة كامل الجدول
+    // دالة تصدير الـ PDF بدون قص وبدون صفحة بيضاء
     async function generatePdfFromElement(elementId, filename, isLandscape = false) {
       const element = document.getElementById(elementId);
-      if (!element) return;
+      if (!element) {
+        alert("لم يتم العثور على جدول التقرير!");
+        return;
+      }
 
       let overlay = document.getElementById("pdfLoadingOverlay");
       if (!overlay) {
@@ -1374,14 +1448,24 @@
       }
       overlay.style.display = "flex";
 
-      const clone = element.cloneNode(true);
-      const renderContainer = document.createElement("div");
-      renderContainer.id = "tempPdfRenderContainer";
-      renderContainer.style.cssText = `position:fixed;top:0;left:0;width:${isLandscape ? "1050px" : "780px"};background:#ffffff;color:#000000;z-index:999998;direction:rtl;box-sizing:border-box;padding:20px;font-family:Cairo,sans-serif;`;
-      renderContainer.appendChild(clone);
-      document.body.appendChild(renderContainer);
+      const wrapper = document.querySelector(".pdf-source-wrapper");
+      if (wrapper) {
+        wrapper.style.display = "block";
+        wrapper.style.position = "fixed";
+        wrapper.style.top = "0";
+        wrapper.style.left = "0";
+        wrapper.style.width = isLandscape ? "1050px" : "780px";
+        wrapper.style.zIndex = "999998";
+        wrapper.style.background = "#ffffff";
+        wrapper.style.opacity = "1";
+      }
 
-      await new Promise(resolve => setTimeout(resolve, 250));
+      ['pdfContainer', 'monthlyPdfContainer', 'singleServantPdfContainer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = (id === elementId) ? "block" : "none";
+      });
+
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       const opt = {
         margin: [6, 6, 6, 6],
@@ -1402,21 +1486,24 @@
         pagebreak: { mode: ["avoid-all", "css", "legacy"] }
       };
 
-      try {
-        await html2pdf().set(opt).from(renderContainer).save();
-      } catch (err) {
-        console.error("PDF error:", err);
-        alert("حدث خطأ أثناء استخراج الـ PDF: " + err.message);
-      } finally {
-        if (renderContainer.parentNode) {
-          renderContainer.parentNode.removeChild(renderContainer);
-        }
+      html2pdf().set(opt).from(element).save().then(() => {
+        if (wrapper) wrapper.style.display = "none";
         overlay.style.display = "none";
-      }
+      }).catch(err => {
+        console.error("PDF error:", err);
+        if (wrapper) wrapper.style.display = "none";
+        overlay.style.display = "none";
+        alert("حدث خطأ أثناء استخراج الـ PDF: " + err.message);
+      });
     }
 
-    // 1. تقرير اليوم PDF (متضمناً حضور الخدمة واجتماع الخدام والنسب)
+    // 1. تقرير اليوم PDF (شامل الخدمة واجتماع الخدام والنسب)
     window.exportCurrentDayPDF = async function() {
+      if (allServants.length === 0) {
+        alert("قائمة الخدام فارغة! يرجى التأكد من تسجيل الخدام أولاً.");
+        return;
+      }
+
       const selectedDate = document.getElementById("adminSelectedDate").value || todayStr;
       const tbody = document.getElementById("pdfTableBody");
       tbody.innerHTML = "";
@@ -1468,74 +1555,6 @@
 
       await generatePdfFromElement("pdfContainer", `Daily_Attendance_${selectedDate}.pdf`, false);
     };
-
-    // ================= الحضور الشهري لكل خادم =================
-    let monthlyRecords = [];
-    let monthlyMeetingDates = [];
-
-    window.loadMonthlyAttendance = async function() {
-      const monthVal = document.getElementById('monthlyReportMonth').value;
-      if (!monthVal) return;
-
-      document.getElementById('monthlyTitleLabel').innerText = `سجل حضور وغياب الخدام لشهر (${monthVal})`;
-
-      const startDate = `${monthVal}-01`;
-      const endDate = `${monthVal}-31`;
-
-      const q = query(
-        collection(db, "attendance"),
-        where("date", ">=", startDate),
-        where("date", "<=", endDate)
-      );
-      const snap = await getDocs(q);
-      monthlyRecords = [];
-      const datesSet = new Set();
-
-      snap.forEach(docSnap => {
-        const data = docSnap.data();
-        monthlyRecords.push(data);
-        if (data.status === "Present" || data.meetingStatus === "Present") {
-          datesSet.add(data.date);
-        }
-      });
-
-      monthlyMeetingDates = Array.from(datesSet).sort();
-      renderMonthlyTable(monthVal);
-    };
-
-    function renderMonthlyTable(monthVal) {
-      const tbody = document.getElementById('monthlyTableBody');
-      tbody.innerHTML = '';
-
-      const totalMeetings = monthlyMeetingDates.length;
-
-      allServants.forEach(servant => {
-        const servantRecords = monthlyRecords.filter(r => r.servantCode === servant.code);
-        const serviceAttended = servantRecords.filter(r => r.status === "Present").length;
-        const meetingAttended = servantRecords.filter(r => r.meetingStatus === "Present").length;
-
-        const servicePct = totalMeetings > 0 ? Math.round((serviceAttended / totalMeetings) * 100) : 0;
-        const meetingPct = totalMeetings > 0 ? Math.round((meetingAttended / totalMeetings) * 100) : 0;
-
-        const attendedDates = servantRecords
-          .filter(r => r.status === "Present" || r.meetingStatus === "Present")
-          .map(r => r.date.substring(5))
-          .join(" ، ");
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="p-2.5 font-bold font-mono text-amber-300">${servant.code}</td>
-          <td class="p-2.5 font-bold text-white">${servant.name}</td>
-          <td class="p-2.5 text-emerald-300 font-semibold">${servant.class || '-'}</td>
-          <td class="p-2.5 text-center text-green-400 font-bold font-mono">${serviceAttended}</td>
-          <td class="p-2.5 text-center font-bold text-blue-300 font-mono">${servicePct}%</td>
-          <td class="p-2.5 text-center text-amber-400 font-bold font-mono">${meetingAttended}</td>
-          <td class="p-2.5 text-center font-bold text-purple-300 font-mono">${meetingPct}%</td>
-          <td class="p-2.5 text-xs text-gray-300">${attendedDates || 'لم يحضر'}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
 
     // 2. تقرير الحضور الشهري PDF
     window.exportMonthlyPDF = async function() {
@@ -1617,6 +1636,74 @@
 
       await generatePdfFromElement("singleServantPdfContainer", `Attendance_${data.servant.code}_${data.start}_to_${data.end}.pdf`, false);
     };
+
+    // ================= الحضور الشهري لكل خادم =================
+    let monthlyRecords = [];
+    let monthlyMeetingDates = [];
+
+    window.loadMonthlyAttendance = async function() {
+      const monthVal = document.getElementById('monthlyReportMonth').value;
+      if (!monthVal) return;
+
+      document.getElementById('monthlyTitleLabel').innerText = `سجل حضور وغياب الخدام لشهر (${monthVal})`;
+
+      const startDate = `${monthVal}-01`;
+      const endDate = `${monthVal}-31`;
+
+      const q = query(
+        collection(db, "attendance"),
+        where("date", ">=", startDate),
+        where("date", "<=", endDate)
+      );
+      const snap = await getDocs(q);
+      monthlyRecords = [];
+      const datesSet = new Set();
+
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        monthlyRecords.push(data);
+        if (data.status === "Present" || data.meetingStatus === "Present") {
+          datesSet.add(data.date);
+        }
+      });
+
+      monthlyMeetingDates = Array.from(datesSet).sort();
+      renderMonthlyTable(monthVal);
+    };
+
+    function renderMonthlyTable(monthVal) {
+      const tbody = document.getElementById('monthlyTableBody');
+      tbody.innerHTML = '';
+
+      const totalMeetings = monthlyMeetingDates.length;
+
+      allServants.forEach(servant => {
+        const servantRecords = monthlyRecords.filter(r => r.servantCode === servant.code);
+        const serviceAttended = servantRecords.filter(r => r.status === "Present").length;
+        const meetingAttended = servantRecords.filter(r => r.meetingStatus === "Present").length;
+
+        const servicePct = totalMeetings > 0 ? Math.round((serviceAttended / totalMeetings) * 100) : 0;
+        const meetingPct = totalMeetings > 0 ? Math.round((meetingAttended / totalMeetings) * 100) : 0;
+
+        const attendedDates = servantRecords
+          .filter(r => r.status === "Present" || r.meetingStatus === "Present")
+          .map(r => r.date.substring(5))
+          .join(" ، ");
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2.5 font-bold font-mono text-amber-300">${servant.code}</td>
+          <td class="p-2.5 font-bold text-white">${servant.name}</td>
+          <td class="p-2.5 text-emerald-300 font-semibold">${servant.class || '-'}</td>
+          <td class="p-2.5 text-center text-green-400 font-bold font-mono">${serviceAttended}</td>
+          <td class="p-2.5 text-center font-bold text-blue-300 font-mono">${servicePct}%</td>
+          <td class="p-2.5 text-center font-amber-400 font-bold font-mono">${meetingAttended}</td>
+          <td class="p-2.5 text-center font-bold text-purple-300 font-mono">${meetingPct}%</td>
+          <td class="p-2.5 text-xs text-gray-300">${attendedDates || 'لم يحضر'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
     await initAdminCredentials();
     await loadTimingConfig();
