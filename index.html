@@ -1525,3 +1525,150 @@
         if (overlay) overlay.style.display = "none";
       }
     }
+// 1. تقرير اليوم PDF (متضمناً حضور الخدمة واجتماع الخدام والنسب)
+    window.exportCurrentDayPDF = async function() {
+      if (allServants.length === 0) {
+        alert("قائمة الخدام فارغة! يرجى التأكد من تسجيل الخدام أولاً.");
+        return;
+      }
+      const selectedDate = document.getElementById("adminSelectedDate").value || todayStr;
+      const tbody = document.getElementById("pdfTableBody");
+      tbody.innerHTML = "";
+
+      const now = new Date();
+      document.getElementById("pdfDateBox").innerText = `Date: ${selectedDate}`;
+      document.getElementById("pdfPrintTime").innerText = `Print Time: ${now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+
+      let serviceCount = 0;
+      let meetingCount = 0;
+      let serial = 1;
+
+      allServants.forEach(servant => {
+        const record = currentAttendance[servant.code] || {};
+        const isService = record.status === "Present";
+        const isMeeting = record.meetingStatus === "Present";
+
+        if (isService) serviceCount++;
+        if (isMeeting) meetingCount++;
+
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = (serial % 2 === 0) ? "#f0fdf4" : "#ffffff";
+        tr.innerHTML = `
+          <td>${serial++}</td>
+          <td style="font-family: monospace; font-weight: bold;">${servant.code}</td>
+          <td style="text-align: right; font-weight: bold;">${servant.name}</td>
+          <td style="text-align: right;">${servant.class || "-"}</td>
+          <td style="color: ${isService ? "#15803d" : "#b91c1c"}; font-weight: bold;">
+            ${isService ? "Present" : "Absent"}
+          </td>
+          <td style="font-family: monospace;">${isService ? (record.time || "-") : "-"}</td>
+          <td style="color: ${isMeeting ? "#15803d" : "#6b7280"}; font-weight: bold;">
+            ${isMeeting ? "حاضر" : "غائب"}
+          </td>
+          <td>${record.notes || ""}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const total = allServants.length;
+      const sPct = total > 0 ? Math.round((serviceCount / total) * 100) : 0;
+      const mPct = total > 0 ? Math.round((meetingCount / total) * 100) : 0;
+
+      const sBox = document.getElementById("pdfServiceCountBox");
+      if (sBox) sBox.innerText = `حضور الخدمة: ${serviceCount}/${total} (${sPct}%)`;
+
+      const mBox = document.getElementById("pdfMeetingCountBox");
+      if (mBox) mBox.innerText = `حضور الاجتماع: ${meetingCount}/${total} (${mPct}%)`;
+
+      await generatePdfFromElement("pdfContainer", `Daily_Attendance_${selectedDate}.pdf`, false);
+    };
+
+    // 2. تقرير الحضور الشهري PDF
+    window.exportMonthlyPDF = async function() {
+      const monthVal = document.getElementById("monthlyReportMonth").value || currentMonthStr;
+      const tbody = document.getElementById("monthlyPdfTableBody");
+      tbody.innerHTML = "";
+
+      const totalMeetings = monthlyMeetingDates.length;
+      document.getElementById("monthlyPdfMonthLabel").innerText = `تقرير شهر: ${monthVal}`;
+      document.getElementById("monthlyPdfMeetingsCount").innerText = `عدد الفعاليات المسجلة: ${totalMeetings}`;
+      document.getElementById("monthlyPdfPrintTime").innerText = `تاريخ الطباعة: ${new Date().toLocaleDateString("ar-EG")}`;
+
+      let serial = 1;
+      allServants.forEach(servant => {
+        const servantRecords = monthlyRecords.filter(r => r.servantCode === servant.code);
+        const serviceAttended = servantRecords.filter(r => r.status === "Present").length;
+        const meetingAttended = servantRecords.filter(r => r.meetingStatus === "Present").length;
+
+        const servicePct = totalMeetings > 0 ? Math.round((serviceAttended / totalMeetings) * 100) : 0;
+        const meetingPct = totalMeetings > 0 ? Math.round((meetingAttended / totalMeetings) * 100) : 0;
+
+        const attendedDates = servantRecords
+          .filter(r => r.status === "Present" || r.meetingStatus === "Present")
+          .map(r => r.date.substring(5))
+          .join(" ، ");
+
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = (serial % 2 === 0) ? "#f0fdf4" : "#ffffff";
+        tr.innerHTML = `
+          <td>${serial++}</td>
+          <td style="font-family: monospace; font-weight: bold;">${servant.code}</td>
+          <td style="text-align: right; font-weight: bold;">${servant.name}</td>
+          <td style="text-align: right;">${servant.class || "-"}</td>
+          <td style="font-weight: bold; color: #15803d;">${serviceAttended}</td>
+          <td style="font-weight: bold;">${servicePct}%</td>
+          <td style="font-weight: bold; color: #b45309;">${meetingAttended}</td>
+          <td style="font-weight: bold;">${meetingPct}%</td>
+          <td style="font-size: 9px; text-align: right;">${attendedDates || "لم يحضر"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      await generatePdfFromElement("monthlyPdfContainer", `Monthly_Attendance_${monthVal}.pdf`, true);
+    };
+
+    // 3. تقرير خادم محدد PDF
+    window.exportSingleServantPDF = async function() {
+      if (!currentSingleServantData) return;
+      const data = currentSingleServantData;
+
+      document.getElementById("pdfSingleServantName").innerText = data.servant.name;
+      document.getElementById("pdfSingleServantCode").innerText = data.servant.code;
+      document.getElementById("pdfSingleServantClass").innerText = data.servant.class || "-";
+      document.getElementById("pdfSingleServantFrom").innerText = data.start;
+      document.getElementById("pdfSingleServantTo").innerText = data.end;
+      document.getElementById("pdfSingleServantPct").innerText = `الخدمة: ${data.servicePct}% | الاجتماع: ${data.meetingPct}%`;
+      document.getElementById("pdfSingleServantPCount").innerText = data.serviceCount;
+      document.getElementById("pdfSingleServantACount").innerText = data.meetingCount;
+
+      const tbody = document.getElementById("singleServantPdfTableBody");
+      tbody.innerHTML = "";
+      let m = 1;
+
+      data.records.forEach(item => {
+        const isServ = item.serviceStatus === "Present";
+        const isMeet = item.meetingStatus === "Present";
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = (m % 2 === 0) ? "#f0fdf4" : "#ffffff";
+        tr.innerHTML = `
+          <td>${m++}</td>
+          <td style="font-family: monospace;">${item.date}</td>
+          <td style="font-weight: bold; color: ${isServ ? "#15803d" : "#b91c1c"};">${isServ ? "Present" : "Absent"}</td>
+          <td style="font-family: monospace;">${item.serviceTime}</td>
+          <td style="font-weight: bold; color: ${isMeet ? "#b45309" : "#6b7280"};">${isMeet ? "حاضر" : "غائب"}</td>
+          <td>${item.notes}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      await generatePdfFromElement("singleServantPdfContainer", `Attendance_${data.servant.code}_${data.start}_to_${data.end}.pdf`, false);
+    };
+
+    // تشغيل النظام وجلب البيانات الأولية
+    await initAdminCredentials();
+    await loadTimingConfig();
+    checkAdminSession();
+    await loadServantsData();
+  </script>
+</body>
+</html>
