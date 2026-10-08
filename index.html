@@ -4,22 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>خدمة الخدام - كنيسة الشهيد العظيم مارمينا</title>
+  <!-- Tailwind CSS & الخط العربي Cairo -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- html2pdf.js لتوليد ملفات الـ PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     body { font-family: 'Cairo', sans-serif; }
-  .church-bg {
-      background-image: linear-gradient(rgba(10, 25, 15, 0.68), rgba(10, 25, 15, 0.75)), 
+    /* خلفية كنيسة مارمينا والبابا كيرلس */
+    .church-bg {
+      background-image: linear-gradient(rgba(10, 25, 15, 0.70), rgba(10, 25, 15, 0.78)), 
                         url('1790832688461.jpeg'),
-                        url('1790832688461.jpg'),
-                        url('bg.jpg.png');
+                        url('bg.jpg');
       background-size: cover;
       background-position: center top;
       background-attachment: fixed;
     }
-   .report-table {
+    .report-table {
       width: 100% !important;
       border-collapse: collapse !important;
       direction: rtl !important;
@@ -36,10 +38,28 @@
       page-break-inside: avoid !important;
       break-inside: avoid !important;
     }
+    .month-report-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      direction: rtl !important;
+    }
+    .month-report-table th, .month-report-table td {
+      border: 1px solid #047857 !important;
+      padding: 5px 6px !important;
+      text-align: center !important;
+      font-size: 10px !important;
+      color: #000000 !important;
+      line-height: 1.3 !important;
+    }
+    .month-report-table tr {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
   </style>
 </head>
 <body class="church-bg min-h-screen text-gray-100 flex flex-col justify-between">
 
+  <!-- ================= الشريط العلوي ================= -->
   <header class="bg-black/50 backdrop-blur-md border-b border-green-700/40 sticky top-0 z-30">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
@@ -68,7 +88,11 @@
       </div>
     </div>
   </header>
+
+  <!-- ================= المحتوى الرئيسي ================= -->
   <main class="max-w-6xl mx-auto p-4 flex-1 w-full my-4">
+
+    <!-- 1. واجهة الخدام العامة المتاحة للجميع أونلاين -->
     <section id="publicServantView" class="space-y-6">
       
       <div class="flex justify-center">
@@ -83,8 +107,10 @@
           </button>
         </div>
       </div>
+
+      <!-- تبويب تسجيل الحضور اليومي للخادم (حضور الخدمة) -->
       <div id="checkinTab" class="bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 shadow-2xl max-w-xl mx-auto text-center space-y-4">
-        <h2 class="text-xl font-bold text-amber-200">تسجيل حضور الخادم</h2>
+        <h2 class="text-xl font-bold text-amber-200">تسجيل حضور الخدمة</h2>
         <p id="publicTimeWindowInfo" class="text-xs text-gray-300">جاري تحميل مواعيد التسجيل...</p>
 
         <div id="timeStatusAlert" class="p-3 rounded-lg text-xs font-bold border"></div>
@@ -95,15 +121,17 @@
           
           <button id="btnSubmitAttendance" onclick="servantSelfCheckIn()" 
                   class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-base disabled:opacity-50">
-            تأكيد تسجيل الحضور
+            تأكيد تسجيل حضور الخدمة
           </button>
         </div>
         <p id="checkinFeedback" class="text-sm font-semibold min-h-[24px]"></p>
       </div>
+
+      <!-- تبويب تسجيل خادم جديد -->
       <div id="registerTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 shadow-2xl max-w-2xl mx-auto space-y-4">
         <div class="border-b border-gray-700 pb-3">
           <h2 class="text-xl font-bold text-amber-200">استمارة تسجيل خادم جديد</h2>
-          <p class="text-xs text-gray-300">الكود والاسم والفصل فقط بيانات إجبارية. سيظهر تحذير فوري إذا كان الكود مستخدماً.</p>
+          <p class="text-xs text-gray-300">الكود القديم والاسم والفصل فقط بيانات إجبارية. سيظهر تحذير فوري إذا كان الكود مستخدماً.</p>
         </div>
 
         <form id="selfRegisterForm" onsubmit="handleSelfRegister(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
@@ -148,9 +176,38 @@
         <p id="registerFeedback" class="text-center text-sm font-semibold"></p>
       </div>
 
+      <!-- قسم حضور اجتماع الخدام (اختياري) -->
+      <div class="bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-amber-500/40 shadow-2xl max-w-xl mx-auto space-y-3 text-center">
+        <div class="flex items-center justify-between cursor-pointer select-none" onclick="toggleMeetingAccordion()">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🤝</span>
+            <h3 class="text-base font-bold text-amber-200">حضور اجتماع الخدام (اختياري)</h3>
+          </div>
+          <span id="meetingToggleLabel" class="text-xs bg-amber-600/30 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-lg font-bold">
+            ▼ اضغط لتسجيل كودك
+          </span>
+        </div>
+
+        <div id="meetingAccordionContent" class="hidden pt-3 border-t border-gray-700/80 space-y-3">
+          <p class="text-xs text-gray-300">تسجيل حضور خاص باجتماع الخدام فقط (بدون توقيت - يظهر بالاسم والكود للأمين لتأكيد الحضور).</p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="number" id="meetingServantCodeInput" placeholder="أدخل كودك القديم..." 
+                   class="flex-1 p-2.5 bg-black/60 border border-amber-500/50 rounded-xl text-center text-lg font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
+            <button onclick="servantMeetingCheckIn()" 
+                    class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-lg text-sm">
+              تسجيل حضور الاجتماع
+            </button>
+          </div>
+          <p id="meetingFeedback" class="text-xs font-semibold min-h-[18px]"></p>
+        </div>
+      </div>
+
     </section>
+
+    <!-- ================= 2. لوحة تحكم الآدمن (المحمية والمخصصة للأمين) ================= -->
     <section id="privateAdminView" class="hidden space-y-6">
       
+      <!-- شريط معلومات الآدمن وقائمة التبويبات -->
       <div class="bg-amber-500/20 border border-amber-500/50 p-4 rounded-xl flex flex-wrap justify-between items-center gap-3 text-amber-200 text-sm">
         <div class="flex items-center gap-2">
           <span class="font-bold">لوحة تحكم أمين الخدمة</span>
@@ -177,33 +234,42 @@
           </button>
         </div>
       </div>
+
+      <!-- 2.1 تبويب كشف الحضور اليومي للآدمن -->
       <div id="adminAttendanceSubTab" class="space-y-4">
+        
         <div class="bg-emerald-950/40 border border-emerald-600/40 p-3 rounded-xl flex flex-wrap justify-between items-center text-xs text-emerald-200 gap-2">
-          <span>💡 <b>ملاحظة للأمين:</b> يمكنك رصد حضور وغياب أي يوم في أي وقت بحرية (تسجيل من ورقة بعد الخدمة أو في البيت بدون قيود وقت).</span>
+          <span>💡 <b>ملاحظة للأمين:</b> يمكنك رصد حضور وغياب الخدمة واجتماع الخدام بحرية في أي وقت من ورقة بعد الخدمة.</span>
           <button onclick="exportCurrentDayPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-1 shadow">
-            📄 استخراج PDF لليوم (بدون رقم تليفون)
+            📄 استخراج PDF لليوم (شامل الخدمة والاجتماع)
           </button>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center text-white">
+        <!-- إحصائيات ونسب الحضور لليوم المحدد -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 text-center text-white">
           <div class="bg-black/60 p-3 rounded-xl border border-gray-700">
             <span class="text-xs text-gray-400">إجمالي الخدام</span>
             <p id="adminTotalCount" class="text-xl font-bold">0</p>
           </div>
           <div class="bg-green-950/60 p-3 rounded-xl border border-green-600/50">
-            <span class="text-xs text-green-300">حاضر (Present)</span>
+            <span class="text-xs text-green-300">حضور الخدمة</span>
             <p id="adminPresentCount" class="text-xl font-bold text-green-400">0</p>
           </div>
-          <div class="bg-red-950/60 p-3 rounded-xl border border-red-600/50">
-            <span class="text-xs text-red-300">غائب (Absent)</span>
-            <p id="adminAbsentCount" class="text-xl font-bold text-red-400">0</p>
-          </div>
           <div class="bg-blue-950/60 p-3 rounded-xl border border-blue-600/50">
-            <span class="text-xs text-blue-300">نسبة الحضور</span>
+            <span class="text-xs text-blue-300">نسبة الخدمة</span>
             <p id="adminPercentage" class="text-xl font-bold text-blue-300">0%</p>
+          </div>
+          <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-600/50">
+            <span class="text-xs text-amber-300">حضور الاجتماع</span>
+            <p id="adminMeetingPresentCount" class="text-xl font-bold text-amber-400">0</p>
+          </div>
+          <div class="bg-purple-950/60 p-3 rounded-xl border border-purple-600/50">
+            <span class="text-xs text-purple-300">نسبة الاجتماع</span>
+            <p id="adminMeetingPercentage" class="text-xl font-bold text-purple-300">0%</p>
           </div>
         </div>
 
+        <!-- أدوات التحكم والبحث والتاريخ -->
         <div class="bg-black/60 p-4 rounded-xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
           <div class="w-full md:w-1/2">
             <input type="text" id="adminSearchInput" oninput="renderAdminAttendanceTable()" placeholder="ابحث باسم الخادم أو الكود القديم أو الفصل..." 
@@ -216,6 +282,7 @@
           </div>
         </div>
 
+        <!-- جدول الخدام اليومي (الخدمة واجتماع الخدام) -->
         <div class="bg-black/70 rounded-xl border border-gray-700 overflow-x-auto">
           <table class="w-full text-right text-xs">
             <thead class="bg-green-900/80 text-amber-200">
@@ -223,16 +290,19 @@
                 <th class="p-3">الكود</th>
                 <th class="p-3">اسم الخادم</th>
                 <th class="p-3">الفصل</th>
-                <th class="p-3">أب الاعتراف</th>
-                <th class="p-3 text-center">الحالة</th>
-                <th class="p-3 text-center">وقت الحضور</th>
-                <th class="p-3 text-center">رصد الحضور (يدوي / من ورقة)</th>
+                <th class="p-3 text-center">حضور الخدمة</th>
+                <th class="p-3 text-center">توقيت الخدمة</th>
+                <th class="p-3 text-center">رصد الخدمة</th>
+                <th class="p-3 text-center">اجتماع الخدام</th>
+                <th class="p-3 text-center">تأكيد الاجتماع</th>
               </tr>
             </thead>
             <tbody id="adminAttendanceTableBody" class="divide-y divide-gray-800 text-gray-200"></tbody>
           </table>
         </div>
       </div>
+
+      <!-- 2.2 تبويب بحث خادم معين لفترة معينة -->
       <div id="adminServantSearchSubTab" class="hidden space-y-4">
         <div class="bg-black/60 p-5 rounded-xl border border-gray-700 space-y-4">
           <h3 class="text-base font-bold text-amber-200 border-b border-gray-700 pb-2">البحث عن سجل خادم معين خلال فترة زمنية</h3>
@@ -269,20 +339,20 @@
           <div class="bg-slate-900/90 border border-amber-500/40 p-4 rounded-xl flex flex-wrap justify-between items-center gap-3 text-sm">
             <div>
               <h4 id="singleServantNameHeader" class="text-base font-bold text-amber-200">الاسم: --</h4>
-              <p id="singleServantSubInfo" class="text-xs text-gray-300 mt-1">الكود: -- | الفصل: --</p>
+              <p id="singleServantSubInfo" class="text-xs text-gray-300 mt-1">الكود: -- | الفصل: -- | أب الاعتراف: --</p>
             </div>
             <div class="flex gap-4 text-center">
               <div class="bg-green-950/60 px-3 py-1.5 rounded-lg border border-green-700">
-                <span class="text-[10px] text-green-300 block">مرات الحضور</span>
+                <span class="text-[10px] text-green-300 block">حضور الخدمة</span>
                 <span id="singleServantPresentCount" class="font-bold text-green-400 font-mono text-base">0</span>
               </div>
-              <div class="bg-red-950/60 px-3 py-1.5 rounded-lg border border-red-700">
-                <span class="text-[10px] text-red-300 block">مرات الغياب</span>
-                <span id="singleServantAbsentCount" class="font-bold text-red-400 font-mono text-base">0</span>
-              </div>
               <div class="bg-blue-950/60 px-3 py-1.5 rounded-lg border border-blue-700">
-                <span class="text-[10px] text-blue-300 block">نسبة الالتزام</span>
+                <span class="text-[10px] text-blue-300 block">نسبة الخدمة</span>
                 <span id="singleServantPercentage" class="font-bold text-blue-300 font-mono text-base">0%</span>
+              </div>
+              <div class="bg-amber-950/60 px-3 py-1.5 rounded-lg border border-amber-700">
+                <span class="text-[10px] text-amber-300 block">حضور الاجتماع</span>
+                <span id="singleServantAbsentCount" class="font-bold text-amber-400 font-mono text-base">0</span>
               </div>
             </div>
           </div>
@@ -293,8 +363,9 @@
                 <tr>
                   <th class="p-2.5">م</th>
                   <th class="p-2.5">تاريخ الاجتماع / الخدمة</th>
-                  <th class="p-2.5 text-center">حالة الحضور</th>
-                  <th class="p-2.5 text-center">وقت التسجيل</th>
+                  <th class="p-2.5 text-center">حضور الخدمة</th>
+                  <th class="p-2.5 text-center">وقت الخدمة</th>
+                  <th class="p-2.5 text-center">اجتماع الخدام</th>
                   <th class="p-2.5">ملاحظات</th>
                 </tr>
               </thead>
@@ -303,6 +374,8 @@
           </div>
         </div>
       </div>
+
+      <!-- 2.3 تبويب كشف الحضور الشهري -->
       <div id="adminMonthlySubTab" class="hidden space-y-4">
         <div class="bg-black/60 p-4 rounded-xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
           <div class="flex items-center gap-3">
@@ -323,9 +396,10 @@
                 <th class="p-2.5">الكود</th>
                 <th class="p-2.5">الاسم</th>
                 <th class="p-2.5">الفصل</th>
-                <th class="p-2.5 text-center">مرات الحضور</th>
-                <th class="p-2.5 text-center">مرات الغياب</th>
-                <th class="p-2.5 text-center">نسبة الحضور</th>
+                <th class="p-2.5 text-center">الخدمة</th>
+                <th class="p-2.5 text-center">نسبة الخدمة</th>
+                <th class="p-2.5 text-center">الاجتماع</th>
+                <th class="p-2.5 text-center">نسبة الاجتماع</th>
                 <th class="p-2.5 text-center">تفاصيل تواريخ الحضور</th>
               </tr>
             </thead>
@@ -333,6 +407,8 @@
           </table>
         </div>
       </div>
+
+      <!-- 2.4 تبويب إدارة وإزالة الخدام -->
       <div id="adminServantsListSubTab" class="hidden space-y-4">
         <div class="bg-black/60 p-4 rounded-xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
           <div>
@@ -362,6 +438,8 @@
           </table>
         </div>
       </div>
+
+      <!-- 2.5 تبويب تحكم المواعيد -->
       <div id="adminTimingSubTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 max-w-lg mx-auto space-y-4">
         <h3 class="text-lg font-bold text-amber-200 border-b border-gray-700 pb-2">التحكم في مواعيد تسجيل الحضور</h3>
         <p class="text-xs text-gray-300">حدد وقت بداية ونهاية التسجيل (افتراضياً يغلق 10:35 صباحاً)، أو افتح/اقفل التسجيل يدوياً في أي لحظة.</p>
@@ -402,6 +480,8 @@
         </form>
         <p id="timingFeedback" class="text-xs text-center font-semibold min-h-[16px]"></p>
       </div>
+
+      <!-- 2.6 تبويب تغيير الباسورد -->
       <div id="adminSettingsSubTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-amber-500/30 max-w-lg mx-auto space-y-4">
         <h3 class="text-lg font-bold text-amber-200 border-b border-gray-700 pb-2">تغيير اسم المستخدم وكلمة المرور للأدمن</h3>
         <p class="text-xs text-gray-400">يمكنك تعديل بيانات الدخول في أي وقت، وسيتم حفظها مباشرة في قاعدة البيانات السحابية.</p>
@@ -426,7 +506,18 @@
 
     </section>
 
+    <!-- نافذة مؤشر استخراج الـ PDF -->
+    <div id="pdfLoadingOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-[999999] hidden">
+      <div class="bg-slate-900 border border-amber-500/50 p-6 rounded-2xl shadow-2xl text-center space-y-3">
+        <div class="text-3xl animate-bounce">📄</div>
+        <h3 class="text-base font-bold text-amber-200">جاري استخراج وتنسيق ملف الـ PDF...</h3>
+        <p class="text-xs text-gray-400">يرجى الانتظار ثانية واحدة لتجهيز الجدول بدقة عالية</p>
+      </div>
+    </div>
+
   </main>
+
+  <!-- نافذة تسجيل دخول الأدمن -->
   <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-slate-900 border border-amber-500/40 w-full max-w-md p-6 rounded-2xl shadow-2xl relative space-y-4">
       <button onclick="closeLoginModal()" class="absolute left-4 top-4 text-gray-400 hover:text-white text-lg">✕</button>
@@ -453,9 +544,13 @@
       <p id="loginFeedback" class="text-xs text-center text-red-400 min-h-[16px]"></p>
     </div>
   </div>
-  <div style="position: absolute; left: -9999px; top: -9999px;">
-    <div id="pdfContainer" style="width: 700px; padding: 20px; background: white; color: black; direction: ltr;">
-      <div style="display: flex; margin-bottom: 2px;">
+
+  <!-- ================= حاويات الـ PDF ================= -->
+  <div class="pdf-source-wrapper" style="display: none;">
+    
+    <!-- 1. حاوية التقرير اليومي PDF -->
+    <div id="pdfContainer" style="width: 720px; padding: 20px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif;">
+      <div style="display: flex; margin-bottom: 2px; direction: ltr;">
         <div style="background-color: #fef08a; padding: 8px 12px; width: 60%; font-weight: bold; font-size: 15px; border: 1px solid #ca8a04;">
           Daily Attendance Report
         </div>
@@ -463,32 +558,36 @@
           Date: --/--/----
         </div>
       </div>
-      <div style="display: flex; margin-bottom: 8px;">
-        <div id="pdfPrintTime" style="background-color: #fef08a; padding: 5px 12px; width: 60%; font-size: 11px; border: 1px solid #ca8a04; border-top: none;">
+      <div style="display: flex; margin-bottom: 8px; direction: rtl;">
+        <div id="pdfPrintTime" style="background-color: #fef08a; padding: 5px 10px; width: 34%; font-size: 11px; border: 1px solid #ca8a04; border-top: none; text-align: right;">
           Print Time: --:--
         </div>
-        <div id="pdfPresentCount" style="background-color: #bbf7d0; padding: 5px 12px; width: 40%; font-size: 11px; font-weight: bold; text-align: right; border: 1px solid #16a34a; border-top: none;">
-          Present Count: 0
+        <div id="pdfServiceCountBox" style="background-color: #bbf7d0; padding: 5px 10px; width: 33%; font-size: 11px; font-weight: bold; text-align: center; border: 1px solid #16a34a; border-top: none;">
+          حضور الخدمة: 0 (0%)
+        </div>
+        <div id="pdfMeetingCountBox" style="background-color: #fef08a; padding: 5px 10px; width: 33%; font-size: 11px; font-weight: bold; text-align: center; border: 1px solid #ca8a04; border-top: none;">
+          حضور الاجتماع: 0 (0%)
         </div>
       </div>
       <table class="report-table" style="width: 100%; border-collapse: collapse; direction: rtl;">
         <thead>
           <tr style="background-color: #15803d; color: white;">
-            <th style="width: 40px;">مسلسل</th>
-            <th style="width: 50px;">الكود</th>
+            <th style="width: 35px;">مسلسل</th>
+            <th style="width: 45px;">الكود</th>
             <th>الاسم</th>
-            <th style="width: 120px;">الفصل</th>
-            <th style="width: 80px;">حالة الحضور</th>
-            <th style="width: 90px;">توقيت الحضور</th>
-            <th style="width: 80px;">ملاحظات</th>
+            <th style="width: 100px;">الفصل</th>
+            <th style="width: 75px;">حضور الخدمة</th>
+            <th style="width: 80px;">توقيت الخدمة</th>
+            <th style="width: 80px;">اجتماع الخدام</th>
+            <th style="width: 70px;">ملاحظات</th>
           </tr>
         </thead>
         <tbody id="pdfTableBody"></tbody>
       </table>
     </div>
-  </div>
-  <div style="position: absolute; left: -9999px; top: -9999px;">
-    <div id="monthlyPdfContainer" style="width: 720px; padding: 20px; background: white; color: black; direction: ltr;">
+
+    <!-- 2. حاوية التقرير الشهري PDF -->
+    <div id="monthlyPdfContainer" style="width: 750px; padding: 20px; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif;">
       <div style="background-color: #047857; color: white; padding: 10px 14px; font-weight: bold; font-size: 16px; text-align: center; border-radius: 4px; margin-bottom: 8px;">
         كنيسة الشهيد العظيم مارمينا - تقرير حضور الخدام الشهري
       </div>
@@ -500,21 +599,22 @@
       <table class="month-report-table" style="width: 100%; border-collapse: collapse; direction: rtl;">
         <thead>
           <tr style="background-color: #047857; color: white;">
-            <th style="width: 35px;">م</th>
-            <th style="width: 45px;">الكود</th>
+            <th style="width: 30px;">م</th>
+            <th style="width: 40px;">الكود</th>
             <th>الاسم</th>
-            <th style="width: 100px;">الفصل</th>
-            <th style="width: 60px;">حضور</th>
-            <th style="width: 60px;">غياب</th>
-            <th style="width: 65px;">النسبة</th>
+            <th style="width: 90px;">الفصل</th>
+            <th style="width: 55px;">الخدمة</th>
+            <th style="width: 50px;">نسبة الخدمة</th>
+            <th style="width: 55px;">الاجتماع</th>
+            <th style="width: 50px;">نسبة الاجتماع</th>
             <th>تواريخ الحضور</th>
           </tr>
         </thead>
         <tbody id="monthlyPdfTableBody"></tbody>
       </table>
     </div>
-  </div>
-  <div style="position: absolute; left: -9999px; top: -9999px;">
+
+    <!-- 3. حاوية تقرير خادم محدد PDF -->
     <div id="singleServantPdfContainer" style="width: 700px; padding: 20px; background: white; color: black; direction: ltr;">
       <div style="background-color: #047857; color: white; padding: 10px; font-weight: bold; font-size: 15px; text-align: center; border-radius: 4px; margin-bottom: 6px;">
         كنيسة الشهيد العظيم مارمينا - تقرير حضور وغياب خادم
@@ -527,7 +627,7 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
           <span><b>الفترة:</b> من <span id="pdfSingleServantFrom">--</span> إلى <span id="pdfSingleServantTo">--</span></span>
-          <span><b>نسبة الالتزام:</b> <span id="pdfSingleServantPct">0%</span> (حضور: <span id="pdfSingleServantPCount">0</span> | غياب: <span id="pdfSingleServantACount">0</span>)</span>
+          <span id="pdfSingleServantPct">--</span>
         </div>
       </div>
       <table class="report-table" style="width: 100%; border-collapse: collapse; direction: rtl;">
@@ -535,15 +635,19 @@
           <tr style="background-color: #15803d; color: white;">
             <th style="width: 40px;">م</th>
             <th>تاريخ الاجتماع / الخدمة</th>
-            <th style="width: 100px;">حالة الحضور</th>
-            <th style="width: 110px;">توقيت الحضور</th>
-            <th style="width: 120px;">ملاحظات</th>
+            <th style="width: 95px;">حضور الخدمة</th>
+            <th style="width: 95px;">توقيت الخدمة</th>
+            <th style="width: 95px;">اجتماع الخدام</th>
+            <th style="width: 100px;">ملاحظات</th>
           </tr>
         </thead>
         <tbody id="singleServantPdfTableBody"></tbody>
       </table>
     </div>
+
   </div>
+
+  <!-- البرمجة والربط بـ Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, deleteDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -669,6 +773,58 @@
       }
     }
 
+    // التحكم في فتح وإغلاق قسم حضور اجتماع الخدام
+    window.toggleMeetingAccordion = function() {
+      const content = document.getElementById("meetingAccordionContent");
+      const label = document.getElementById("meetingToggleLabel");
+      if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        label.innerText = "▲ إغلاق التسجيل";
+      } else {
+        content.classList.add("hidden");
+        label.innerText = "▼ اضغط لتسجيل كودك";
+      }
+    };
+
+    // تسجيل حضور اجتماع الخدام من جهة الخادم (اختياري)
+    window.servantMeetingCheckIn = async function() {
+      const codeVal = parseInt(document.getElementById("meetingServantCodeInput").value);
+      const feedback = document.getElementById("meetingFeedback");
+
+      if (!codeVal) {
+        feedback.className = "text-xs font-semibold text-red-400";
+        feedback.innerText = "برجاء كتابة كود الخادم القديم.";
+        return;
+      }
+
+      const servant = allServants.find(s => s.code === codeVal);
+      if (!servant) {
+        feedback.className = "text-xs font-semibold text-red-400";
+        feedback.innerText = "هذا الكود غير موجود بقاعدة البيانات! يرجى التأكد من كودك.";
+        return;
+      }
+
+      const recordId = `${todayStr}_${servant.code}`;
+      const docRef = doc(db, "attendance", recordId);
+      const existing = currentAttendance[servant.code] || {};
+
+      await setDoc(docRef, {
+        date: todayStr,
+        servantCode: servant.code,
+        servantName: servant.name,
+        servantClass: servant.class || "",
+        status: existing.status || "Absent",
+        time: existing.time || "-",
+        notes: existing.notes || "",
+        meetingStatus: "Present"
+      }, { merge: true });
+
+      feedback.className = "text-xs font-semibold text-green-400";
+      feedback.innerText = `تم تسجيل حضور اجتماع الخدام بنجاح للخادم: ${servant.name} (${servant.code})!`;
+      document.getElementById("meetingServantCodeInput").value = "";
+      await loadAttendanceForDate();
+    };
+
     window.switchPublicTab = function(tab) {
       if (tab === 'checkin') {
         document.getElementById('checkinTab').classList.remove('hidden');
@@ -713,6 +869,7 @@
         console.error(err);
       }
     }
+
     window.checkCodeAvailability = function() {
       const codeVal = parseInt(document.getElementById('regCode').value);
       const msg = document.getElementById('codeAvailabilityMsg');
@@ -756,6 +913,7 @@
       const now = new Date();
       const timeStr = now.toTimeString().split(' ')[0];
       const recordId = `${todayStr}_${servant.code}`;
+      const existing = currentAttendance[servant.code] || {};
 
       await setDoc(doc(db, "attendance", recordId), {
         date: todayStr,
@@ -764,11 +922,12 @@
         servantClass: servant.class || "",
         status: "Present",
         time: timeStr,
-        notes: ""
-      });
+        notes: existing.notes || "",
+        meetingStatus: existing.meetingStatus || "Absent"
+      }, { merge: true });
 
       feedback.className = "text-sm font-semibold text-green-400";
-      feedback.innerText = `أهلاً بك يا ${servant.name} (${servant.class})، تم تسجيل حضورك في تمام الساعة (${timeStr}) بنجاح!`;
+      feedback.innerText = `أهلاً بك يا ${servant.name} (${servant.class})، تم تسجيل حضور الخدمة في تمام الساعة (${timeStr}) بنجاح!`;
       document.getElementById('servantCodeInput').value = '';
       await loadAttendanceForDate();
     };
@@ -911,7 +1070,9 @@
       const tbody = document.getElementById('adminAttendanceTableBody');
       tbody.innerHTML = '';
 
-      let presentCount = 0;
+      let servicePresentCount = 0;
+      let meetingPresentCount = 0;
+
       const filtered = allServants.filter(s => 
         s.name.toLowerCase().includes(search) || 
         String(s.code).includes(search) || 
@@ -919,24 +1080,28 @@
       );
 
       filtered.forEach(s => {
-        const record = currentAttendance[s.code];
-        const isPresent = record && record.status === "Present";
-        if (isPresent) presentCount++;
+        const record = currentAttendance[s.code] || {};
+        const isServicePresent = record.status === "Present";
+        const isMeetingPresent = record.meetingStatus === "Present";
+
+        if (isServicePresent) servicePresentCount++;
+        if (isMeetingPresent) meetingPresentCount++;
 
         const tr = document.createElement('tr');
-        tr.className = isPresent ? "bg-green-950/25" : "";
+        tr.className = (isServicePresent || isMeetingPresent) ? "bg-green-950/25" : "";
         tr.innerHTML = `
-          <td class="p-3 font-bold font-mono">${s.code}</td>
-          <td class="p-3 font-bold text-amber-200">${s.name}</td>
+          <td class="p-3 font-bold font-mono text-amber-300">${s.code}</td>
+          <td class="p-3 font-bold text-white">${s.name}</td>
           <td class="p-3 text-emerald-300 font-semibold">${s.class || '-'}</td>
-          <td class="p-3 text-gray-400">${s.father || '-'}</td>
+          
+          <!-- حضور الخدمة -->
           <td class="p-3 text-center">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isPresent ? 'bg-green-700 text-white' : 'bg-red-900/60 text-red-300'}">
-              ${isPresent ? 'Present' : 'Absent'}
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isServicePresent ? 'bg-green-700 text-white' : 'bg-red-900/60 text-red-300'}">
+              ${isServicePresent ? 'Present' : 'Absent'}
             </span>
           </td>
-          <td class="p-3 text-center font-mono ${isPresent ? 'text-green-300' : 'text-gray-500'}">
-            ${isPresent ? record.time : '-'}
+          <td class="p-3 text-center font-mono ${isServicePresent ? 'text-green-300 font-semibold' : 'text-gray-500'}">
+            ${isServicePresent ? record.time : '-'}
           </td>
           <td class="p-3 text-center">
             <div class="flex justify-center gap-1">
@@ -948,15 +1113,35 @@
               </button>
             </div>
           </td>
+
+          <!-- اجتماع الخدام -->
+          <td class="p-3 text-center">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isMeetingPresent ? 'bg-amber-600 text-white' : 'bg-gray-800 text-gray-400'}">
+              ${isMeetingPresent ? 'حاضر' : 'غائب'}
+            </span>
+          </td>
+          <td class="p-3 text-center">
+            <button onclick="adminToggleMeeting(${s.code})" 
+                    class="px-2.5 py-1 rounded text-xs font-bold shadow transition ${isMeetingPresent ? 'bg-red-800 hover:bg-red-700 text-white' : 'bg-amber-700 hover:bg-amber-600 text-white'}">
+              ${isMeetingPresent ? 'إلغاء ✕' : 'تأكيد الاجتماع ✓'}
+            </button>
+          </td>
         `;
         tbody.appendChild(tr);
       });
 
-      document.getElementById('adminTotalCount').innerText = allServants.length;
-      document.getElementById('adminPresentCount').innerText = presentCount;
-      document.getElementById('adminAbsentCount').innerText = allServants.length - presentCount;
-      const pct = allServants.length > 0 ? Math.round((presentCount / allServants.length) * 100) : 0;
-      document.getElementById('adminPercentage').innerText = `${pct}%`;
+      const total = allServants.length;
+      document.getElementById('adminTotalCount').innerText = total;
+      
+      document.getElementById('adminPresentCount').innerText = servicePresentCount;
+      const sPct = total > 0 ? Math.round((servicePresentCount / total) * 100) : 0;
+      document.getElementById('adminPercentage').innerText = `${sPct}%`;
+
+      const meetingElem = document.getElementById('adminMeetingPresentCount');
+      if (meetingElem) meetingElem.innerText = meetingPresentCount;
+      const mPctElem = document.getElementById('adminMeetingPercentage');
+      const mPct = total > 0 ? Math.round((meetingPresentCount / total) * 100) : 0;
+      if (mPctElem) mPctElem.innerText = `${mPct}%`;
     };
 
     window.adminMarkPresent = async function(code) {
@@ -965,6 +1150,8 @@
       if (!servant) return;
 
       const timeStr = new Date().toTimeString().split(' ')[0];
+      const existing = currentAttendance[code] || {};
+
       await setDoc(doc(db, "attendance", `${selectedDate}_${code}`), {
         date: selectedDate,
         servantCode: servant.code,
@@ -972,19 +1159,54 @@
         servantClass: servant.class || "",
         status: "Present",
         time: timeStr,
-        notes: "رصد يدوي"
-      });
+        notes: existing.notes || "رصد يدوي",
+        meetingStatus: existing.meetingStatus || "Absent"
+      }, { merge: true });
+
       await loadAttendanceForDate();
     };
 
     window.adminCancelAttendance = async function(code) {
       const selectedDate = document.getElementById('adminSelectedDate').value || todayStr;
-      await deleteDoc(doc(db, "attendance", `${selectedDate}_${code}`));
+      const existing = currentAttendance[code] || {};
+
+      if (existing.meetingStatus === "Present") {
+        await setDoc(doc(db, "attendance", `${selectedDate}_${code}`), {
+          status: "Absent",
+          time: "-"
+        }, { merge: true });
+      } else {
+        await deleteDoc(doc(db, "attendance", `${selectedDate}_${code}`));
+      }
       await loadAttendanceForDate();
     };
+
+    window.adminToggleMeeting = async function(code) {
+      const selectedDate = document.getElementById('adminSelectedDate').value || todayStr;
+      const servant = allServants.find(s => s.code === code);
+      if (!servant) return;
+
+      const existing = currentAttendance[code] || {};
+      const newStatus = existing.meetingStatus === "Present" ? "Absent" : "Present";
+
+      await setDoc(doc(db, "attendance", `${selectedDate}_${code}`), {
+        date: selectedDate,
+        servantCode: servant.code,
+        servantName: servant.name,
+        servantClass: servant.class || "",
+        status: existing.status || "Absent",
+        time: existing.time || "-",
+        notes: existing.notes || "",
+        meetingStatus: newStatus
+      }, { merge: true });
+
+      await loadAttendanceForDate();
+    };
+
     window.renderFullServantsListTable = function() {
       const search = (document.getElementById('servantsListSearchInput').value || '').trim().toLowerCase();
       const tbody = document.getElementById('fullServantsListTableBody');
+      if (!tbody) return;
       tbody.innerHTML = '';
 
       const filtered = allServants.filter(s => 
@@ -1026,6 +1248,7 @@
         alert("حدث خطأ أثناء إزالة الخادم.");
       }
     };
+
     let currentSingleServantData = null;
 
     window.executeServantRangeSearch = async function() {
@@ -1069,28 +1292,34 @@
       const sortedMeetingDates = Array.from(allMeetingDatesSet).sort();
       const totalMeetings = sortedMeetingDates.length;
 
-      let presentCount = 0;
+      let serviceCount = 0;
+      let meetingCount = 0;
       const detailedList = [];
 
       sortedMeetingDates.forEach(dateStr => {
-        const rec = servantRecordsMap[dateStr];
-        const isPresent = rec && rec.status === "Present";
-        if (isPresent) presentCount++;
+        const rec = servantRecordsMap[dateStr] || {};
+        const isService = rec.status === "Present";
+        const isMeeting = rec.meetingStatus === "Present";
+
+        if (isService) serviceCount++;
+        if (isMeeting) meetingCount++;
 
         detailedList.push({
           date: dateStr,
-          status: isPresent ? "Present" : "Absent",
-          time: isPresent ? rec.time : "-",
-          notes: rec ? (rec.notes || "") : ""
+          serviceStatus: isService ? "Present" : "Absent",
+          serviceTime: isService ? (rec.time || "-") : "-",
+          meetingStatus: isMeeting ? "Present" : "Absent",
+          notes: rec.notes || ""
         });
       });
 
-      const absentCount = totalMeetings - presentCount;
-      const pct = totalMeetings > 0 ? Math.round((presentCount / totalMeetings) * 100) : 0;
+      const servicePct = totalMeetings > 0 ? Math.round((serviceCount / totalMeetings) * 100) : 0;
+      const meetingPct = totalMeetings > 0 ? Math.round((meetingCount / totalMeetings) * 100) : 0;
 
       currentSingleServantData = {
         servant, start, end, totalMeetings,
-        presentCount, absentCount, percentage: pct,
+        serviceCount, servicePct,
+        meetingCount, meetingPct,
         records: detailedList
       };
 
@@ -1099,72 +1328,148 @@
 
       document.getElementById('singleServantNameHeader').innerText = `الاسم: ${servant.name}`;
       document.getElementById('singleServantSubInfo').innerText = `الكود: ${servant.code} | الفصل: ${servant.class || '-'} | أب الاعتراف: ${servant.father || '-'}`;
-      document.getElementById('singleServantPresentCount').innerText = presentCount;
-      document.getElementById('singleServantAbsentCount').innerText = absentCount;
-      document.getElementById('singleServantPercentage').innerText = `${pct}%`;
+      document.getElementById('singleServantPresentCount').innerText = serviceCount;
+      document.getElementById('singleServantPercentage').innerText = `${servicePct}%`;
+
+      const absentElem = document.getElementById('singleServantAbsentCount');
+      if (absentElem) absentElem.innerText = meetingCount;
 
       const tbody = document.getElementById('singleServantTableBody');
       tbody.innerHTML = '';
       let m = 1;
 
       detailedList.forEach(item => {
-        const isPresent = item.status === "Present";
+        const isServ = item.serviceStatus === "Present";
+        const isMeet = item.meetingStatus === "Present";
         const tr = document.createElement('tr');
-        tr.className = isPresent ? "bg-green-950/25" : "bg-red-950/15";
+        tr.className = (isServ || isMeet) ? "bg-green-950/25" : "bg-red-950/15";
         tr.innerHTML = `
           <td class="p-2.5 font-bold">${m++}</td>
           <td class="p-2.5 font-mono">${item.date}</td>
-          <td class="p-2.5 text-center font-bold ${isPresent ? 'text-green-400' : 'text-red-400'}">
-            ${isPresent ? 'حاضر (Present)' : 'غائب (Absent)'}
+          <td class="p-2.5 text-center font-bold ${isServ ? 'text-green-400' : 'text-red-400'}">
+            ${isServ ? 'حاضر (Present)' : 'غائب (Absent)'}
           </td>
-          <td class="p-2.5 text-center font-mono ${isPresent ? 'text-green-300' : 'text-gray-500'}">${item.time}</td>
+          <td class="p-2.5 text-center font-mono ${isServ ? 'text-green-300' : 'text-gray-500'}">${item.serviceTime}</td>
+          <td class="p-2.5 text-center font-bold ${isMeet ? 'text-amber-400' : 'text-gray-400'}">
+            ${isMeet ? 'حاضر' : 'غائب'}
+          </td>
           <td class="p-2.5 text-gray-300">${item.notes}</td>
         `;
         tbody.appendChild(tr);
       });
     };
 
-    window.exportSingleServantPDF = function() {
-      if (!currentSingleServantData) return;
-      const data = currentSingleServantData;
+    // دالة تصدير الـ PDF بدون قص ومعالجة كامل الجدول
+    async function generatePdfFromElement(elementId, filename, isLandscape = false) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
 
-      document.getElementById('pdfSingleServantName').innerText = data.servant.name;
-      document.getElementById('pdfSingleServantCode').innerText = data.servant.code;
-      document.getElementById('pdfSingleServantClass').innerText = data.servant.class || '-';
-      document.getElementById('pdfSingleServantFrom').innerText = data.start;
-      document.getElementById('pdfSingleServantTo').innerText = data.end;
-      document.getElementById('pdfSingleServantPct').innerText = `${data.percentage}%`;
-      document.getElementById('pdfSingleServantPCount').innerText = data.presentCount;
-      document.getElementById('pdfSingleServantACount').innerText = data.absentCount;
+      let overlay = document.getElementById("pdfLoadingOverlay");
+      if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "pdfLoadingOverlay";
+        overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Cairo,sans-serif;";
+        overlay.innerHTML = '<div style="background:#0f172a;border:1px solid #f59e0b;padding:24px 32px;border-radius:16px;text-align:center;"><div style="font-size:32px;margin-bottom:8px;">📄</div><div style="font-size:16px;font-weight:bold;color:#fde68a;">جاري استخراج وتنسيق ملف الـ PDF...</div><div style="font-size:12px;color:#94a3b8;margin-top:4px;">يرجى الانتظار لحظات لتجميع وطباعة البيانات بالكامل</div></div>';
+        document.body.appendChild(overlay);
+      }
+      overlay.style.display = "flex";
 
-      const tbody = document.getElementById('singleServantPdfTableBody');
-      tbody.innerHTML = '';
-      let m = 1;
+      const clone = element.cloneNode(true);
+      const renderContainer = document.createElement("div");
+      renderContainer.id = "tempPdfRenderContainer";
+      renderContainer.style.cssText = `position:fixed;top:0;left:0;width:${isLandscape ? "1050px" : "780px"};background:#ffffff;color:#000000;z-index:999998;direction:rtl;box-sizing:border-box;padding:20px;font-family:Cairo,sans-serif;`;
+      renderContainer.appendChild(clone);
+      document.body.appendChild(renderContainer);
 
-      data.records.forEach(item => {
-        const isPresent = item.status === "Present";
-        const tr = document.createElement('tr');
-        tr.style.backgroundColor = (m % 2 === 0) ? '#f0fdf4' : '#ffffff';
+      await new Promise(resolve => setTimeout(resolve, 250));
+
+      const opt = {
+        margin: [6, 6, 6, 6],
+        filename: filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          scrollY: 0,
+          scrollX: 0,
+          windowWidth: isLandscape ? 1100 : 850
+        },
+        jsPDF: {
+          unit: "mm",
+          format: "a4",
+          orientation: isLandscape ? "landscape" : "portrait"
+        },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+      };
+
+      try {
+        await html2pdf().set(opt).from(renderContainer).save();
+      } catch (err) {
+        console.error("PDF error:", err);
+        alert("حدث خطأ أثناء استخراج الـ PDF: " + err.message);
+      } finally {
+        if (renderContainer.parentNode) {
+          renderContainer.parentNode.removeChild(renderContainer);
+        }
+        overlay.style.display = "none";
+      }
+    }
+
+    // 1. تقرير اليوم PDF (متضمناً حضور الخدمة واجتماع الخدام والنسب)
+    window.exportCurrentDayPDF = async function() {
+      const selectedDate = document.getElementById("adminSelectedDate").value || todayStr;
+      const tbody = document.getElementById("pdfTableBody");
+      tbody.innerHTML = "";
+
+      const now = new Date();
+      document.getElementById("pdfDateBox").innerText = `Date: ${selectedDate}`;
+      document.getElementById("pdfPrintTime").innerText = `Print Time: ${now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+
+      let serviceCount = 0;
+      let meetingCount = 0;
+      let serial = 1;
+
+      allServants.forEach(servant => {
+        const record = currentAttendance[servant.code] || {};
+        const isService = record.status === "Present";
+        const isMeeting = record.meetingStatus === "Present";
+
+        if (isService) serviceCount++;
+        if (isMeeting) meetingCount++;
+
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = (serial % 2 === 0) ? "#f0fdf4" : "#ffffff";
         tr.innerHTML = `
-          <td>${m++}</td>
-          <td style="font-family: monospace;">${item.date}</td>
-          <td style="font-weight: bold; color: ${isPresent ? '#15803d' : '#b91c1c'};">${isPresent ? 'Present' : 'Absent'}</td>
-          <td style="font-family: monospace;">${item.time}</td>
-          <td>${item.notes}</td>
+          <td>${serial++}</td>
+          <td style="font-family: monospace; font-weight: bold;">${servant.code}</td>
+          <td style="text-align: right; font-weight: bold;">${servant.name}</td>
+          <td style="text-align: right;">${servant.class || "-"}</td>
+          <td style="color: ${isService ? "#15803d" : "#b91c1c"}; font-weight: bold;">
+            ${isService ? "Present" : "Absent"}
+          </td>
+          <td style="font-family: monospace;">${isService ? (record.time || "-") : "-"}</td>
+          <td style="color: ${isMeeting ? "#15803d" : "#6b7280"}; font-weight: bold;">
+            ${isMeeting ? "حاضر" : "غائب"}
+          </td>
+          <td>${record.notes || ""}</td>
         `;
         tbody.appendChild(tr);
       });
 
-      const element = document.getElementById('singleServantPdfContainer');
-      const opt = {
-        margin: [5, 5, 5, 5],
-        filename: `Attendance_${data.servant.code}_${data.start}_to_${data.end}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      html2pdf().set(opt).from(element).save();
+      const total = allServants.length;
+      const sPct = total > 0 ? Math.round((serviceCount / total) * 100) : 0;
+      const mPct = total > 0 ? Math.round((meetingCount / total) * 100) : 0;
+
+      const sBox = document.getElementById("pdfServiceCountBox");
+      if (sBox) sBox.innerText = `حضور الخدمة: ${serviceCount}/${total} (${sPct}%)`;
+
+      const mBox = document.getElementById("pdfMeetingCountBox");
+      if (mBox) mBox.innerText = `حضور الاجتماع: ${meetingCount}/${total} (${mPct}%)`;
+
+      await generatePdfFromElement("pdfContainer", `Daily_Attendance_${selectedDate}.pdf`, false);
     };
+
+    // ================= الحضور الشهري لكل خادم =================
     let monthlyRecords = [];
     let monthlyMeetingDates = [];
 
@@ -1189,7 +1494,7 @@
       snap.forEach(docSnap => {
         const data = docSnap.data();
         monthlyRecords.push(data);
-        if (data.status === "Present") {
+        if (data.status === "Present" || data.meetingStatus === "Present") {
           datesSet.add(data.date);
         }
       });
@@ -1205,112 +1510,112 @@
       const totalMeetings = monthlyMeetingDates.length;
 
       allServants.forEach(servant => {
-        const servantPresentRecords = monthlyRecords.filter(r => r.servantCode === servant.code && r.status === "Present");
-        const attendedCount = servantPresentRecords.length;
-        const absentCount = totalMeetings >= attendedCount ? (totalMeetings - attendedCount) : 0;
-        const attendedDates = servantPresentRecords.map(r => r.date.substring(5)).join(' ، ');
-        const pct = totalMeetings > 0 ? Math.round((attendedCount / totalMeetings) * 100) : 0;
+        const servantRecords = monthlyRecords.filter(r => r.servantCode === servant.code);
+        const serviceAttended = servantRecords.filter(r => r.status === "Present").length;
+        const meetingAttended = servantRecords.filter(r => r.meetingStatus === "Present").length;
+
+        const servicePct = totalMeetings > 0 ? Math.round((serviceAttended / totalMeetings) * 100) : 0;
+        const meetingPct = totalMeetings > 0 ? Math.round((meetingAttended / totalMeetings) * 100) : 0;
+
+        const attendedDates = servantRecords
+          .filter(r => r.status === "Present" || r.meetingStatus === "Present")
+          .map(r => r.date.substring(5))
+          .join(" ، ");
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td class="p-2.5 font-bold font-mono">${servant.code}</td>
-          <td class="p-2.5 font-bold text-amber-200">${servant.name}</td>
+          <td class="p-2.5 font-bold font-mono text-amber-300">${servant.code}</td>
+          <td class="p-2.5 font-bold text-white">${servant.name}</td>
           <td class="p-2.5 text-emerald-300 font-semibold">${servant.class || '-'}</td>
-          <td class="p-2.5 text-center text-green-400 font-bold font-mono">${attendedCount}</td>
-          <td class="p-2.5 text-center text-red-400 font-bold font-mono">${absentCount}</td>
-          <td class="p-2.5 text-center font-bold text-blue-300 font-mono">${pct}%</td>
+          <td class="p-2.5 text-center text-green-400 font-bold font-mono">${serviceAttended}</td>
+          <td class="p-2.5 text-center font-bold text-blue-300 font-mono">${servicePct}%</td>
+          <td class="p-2.5 text-center text-amber-400 font-bold font-mono">${meetingAttended}</td>
+          <td class="p-2.5 text-center font-bold text-purple-300 font-mono">${meetingPct}%</td>
           <td class="p-2.5 text-xs text-gray-300">${attendedDates || 'لم يحضر'}</td>
         `;
         tbody.appendChild(tr);
       });
     }
-    window.exportCurrentDayPDF = function() {
-      const selectedDate = document.getElementById('adminSelectedDate').value || todayStr;
-      const tbody = document.getElementById('pdfTableBody');
-      tbody.innerHTML = '';
 
-      const now = new Date();
-      document.getElementById('pdfDateBox').innerText = `Date: ${selectedDate}`;
-      document.getElementById('pdfPrintTime').innerText = `Print Time: ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
-
-      let presentCounter = 0;
-      let serial = 1;
-
-      allServants.forEach(servant => {
-        const record = currentAttendance[servant.code];
-        const isPresent = record && record.status === "Present";
-        if (isPresent) presentCounter++;
-
-        const tr = document.createElement('tr');
-        tr.style.backgroundColor = (serial % 2 === 0) ? '#f0fdf4' : '#ffffff';
-        tr.innerHTML = `
-          <td>${serial++}</td>
-          <td style="font-family: monospace; font-weight: bold;">${servant.code}</td>
-          <td style="text-align: right; font-weight: bold;">${servant.name}</td>
-          <td style="text-align: right;">${servant.class || '-'}</td>
-          <td style="color: ${isPresent ? '#15803d' : '#b91c1c'}; font-weight: bold;">
-            ${isPresent ? 'Present' : 'Absent'}
-          </td>
-          <td style="font-family: monospace;">${isPresent ? record.time : '-'}</td>
-          <td>${record ? (record.notes || '') : ''}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      document.getElementById('pdfPresentCount').innerText = `Present Count: ${presentCounter}`;
-
-      const element = document.getElementById('pdfContainer');
-      const opt = {
-        margin: [5, 5, 5, 5],
-        filename: `Daily_Attendance_${selectedDate}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      html2pdf().set(opt).from(element).save();
-    };
-    window.exportMonthlyPDF = function() {
-      const monthVal = document.getElementById('monthlyReportMonth').value || currentMonthStr;
-      const tbody = document.getElementById('monthlyPdfTableBody');
-      tbody.innerHTML = '';
+    // 2. تقرير الحضور الشهري PDF
+    window.exportMonthlyPDF = async function() {
+      const monthVal = document.getElementById("monthlyReportMonth").value || currentMonthStr;
+      const tbody = document.getElementById("monthlyPdfTableBody");
+      tbody.innerHTML = "";
 
       const totalMeetings = monthlyMeetingDates.length;
-      document.getElementById('monthlyPdfMonthLabel').innerText = `تقرير شهر: ${monthVal}`;
-      document.getElementById('monthlyPdfMeetingsCount').innerText = `عدد الاجتماعات المسجلة في الشهر: ${totalMeetings}`;
-      document.getElementById('monthlyPdfPrintTime').innerText = `تاريخ الطباعة: ${new Date().toLocaleDateString('ar-EG')}`;
+      document.getElementById("monthlyPdfMonthLabel").innerText = `تقرير شهر: ${monthVal}`;
+      document.getElementById("monthlyPdfMeetingsCount").innerText = `عدد الفعاليات المسجلة: ${totalMeetings}`;
+      document.getElementById("monthlyPdfPrintTime").innerText = `تاريخ الطباعة: ${new Date().toLocaleDateString("ar-EG")}`;
 
       let serial = 1;
       allServants.forEach(servant => {
-        const servantPresentRecords = monthlyRecords.filter(r => r.servantCode === servant.code && r.status === "Present");
-        const attendedCount = servantPresentRecords.length;
-        const absentCount = totalMeetings >= attendedCount ? (totalMeetings - attendedCount) : 0;
-        const attendedDates = servantPresentRecords.map(r => r.date.substring(5)).join(' ، ');
-        const pct = totalMeetings > 0 ? Math.round((attendedCount / totalMeetings) * 100) : 0;
+        const servantRecords = monthlyRecords.filter(r => r.servantCode === servant.code);
+        const serviceAttended = servantRecords.filter(r => r.status === "Present").length;
+        const meetingAttended = servantRecords.filter(r => r.meetingStatus === "Present").length;
 
-        const tr = document.createElement('tr');
-        tr.style.backgroundColor = (serial % 2 === 0) ? '#f0fdf4' : '#ffffff';
+        const servicePct = totalMeetings > 0 ? Math.round((serviceAttended / totalMeetings) * 100) : 0;
+        const meetingPct = totalMeetings > 0 ? Math.round((meetingAttended / totalMeetings) * 100) : 0;
+
+        const attendedDates = servantRecords
+          .filter(r => r.status === "Present" || r.meetingStatus === "Present")
+          .map(r => r.date.substring(5))
+          .join(" ، ");
+
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = (serial % 2 === 0) ? "#f0fdf4" : "#ffffff";
         tr.innerHTML = `
           <td>${serial++}</td>
           <td style="font-family: monospace; font-weight: bold;">${servant.code}</td>
           <td style="text-align: right; font-weight: bold;">${servant.name}</td>
-          <td style="text-align: right;">${servant.class || '-'}</td>
-          <td style="font-weight: bold; color: #15803d;">${attendedCount}</td>
-          <td style="font-weight: bold; color: #b91c1c;">${absentCount}</td>
-          <td style="font-weight: bold;">${pct}%</td>
-          <td style="font-size: 9px; text-align: right;">${attendedDates || 'لم يحضر'}</td>
+          <td style="text-align: right;">${servant.class || "-"}</td>
+          <td style="font-weight: bold; color: #15803d;">${serviceAttended}</td>
+          <td style="font-weight: bold;">${servicePct}%</td>
+          <td style="font-weight: bold; color: #b45309;">${meetingAttended}</td>
+          <td style="font-weight: bold;">${meetingPct}%</td>
+          <td style="font-size: 9px; text-align: right;">${attendedDates || "لم يحضر"}</td>
         `;
         tbody.appendChild(tr);
       });
 
-      const element = document.getElementById('monthlyPdfContainer');
-      const opt = {
-        margin: [5, 5, 5, 5],
-        filename: `Monthly_Attendance_${monthVal}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-      };
-      html2pdf().set(opt).from(element).save();
+      await generatePdfFromElement("monthlyPdfContainer", `Monthly_Attendance_${monthVal}.pdf`, true);
+    };
+
+    // 3. تقرير خادم محدد PDF
+    window.exportSingleServantPDF = async function() {
+      if (!currentSingleServantData) return;
+      const data = currentSingleServantData;
+
+      document.getElementById("pdfSingleServantName").innerText = data.servant.name;
+      document.getElementById("pdfSingleServantCode").innerText = data.servant.code;
+      document.getElementById("pdfSingleServantClass").innerText = data.servant.class || "-";
+      document.getElementById("pdfSingleServantFrom").innerText = data.start;
+      document.getElementById("pdfSingleServantTo").innerText = data.end;
+      document.getElementById("pdfSingleServantPct").innerText = `الخدمة: ${data.servicePct}% | الاجتماع: ${data.meetingPct}%`;
+      document.getElementById("pdfSingleServantPCount").innerText = data.serviceCount;
+      document.getElementById("pdfSingleServantACount").innerText = data.meetingCount;
+
+      const tbody = document.getElementById("singleServantPdfTableBody");
+      tbody.innerHTML = "";
+      let m = 1;
+
+      data.records.forEach(item => {
+        const isServ = item.serviceStatus === "Present";
+        const isMeet = item.meetingStatus === "Present";
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = (m % 2 === 0) ? "#f0fdf4" : "#ffffff";
+        tr.innerHTML = `
+          <td>${m++}</td>
+          <td style="font-family: monospace;">${item.date}</td>
+          <td style="font-weight: bold; color: ${isServ ? "#15803d" : "#b91c1c"};">${isServ ? "Present" : "Absent"}</td>
+          <td style="font-family: monospace;">${item.serviceTime}</td>
+          <td style="font-weight: bold; color: ${isMeet ? "#b45309" : "#6b7280"};">${isMeet ? "حاضر" : "غائب"}</td>
+          <td>${item.notes}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      await generatePdfFromElement("singleServantPdfContainer", `Attendance_${data.servant.code}_${data.start}_to_${data.end}.pdf`, false);
     };
 
     await initAdminCredentials();
