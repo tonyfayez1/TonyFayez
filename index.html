@@ -14,13 +14,13 @@
     body { font-family: 'Cairo', sans-serif; }
     .church-bg {
       background-image: linear-gradient(rgba(10, 25, 15, 0.70), rgba(10, 25, 15, 0.78)), 
-                        url('1790832688461.jpeg'),
+                        url('1790832688461.jpeg'), 
                         url('bg.jpg');
       background-size: cover;
       background-position: center top;
       background-attachment: fixed;
     }
-.html2pdf__container {
+    .html2pdf__container {
       width: 100% !important;
       direction: rtl !important;
     }
@@ -566,11 +566,13 @@
       <p id="loginFeedback" class="text-xs text-center text-red-400 min-h-[16px]"></p>
     </div>
   </div>
-<!-- ================= حاويات تقارير الـ PDF الموحدة ================= -->
+
+  <!-- ================= حاويات تقارير الـ PDF الموحدة (100% بدون أي قص نهائياً) ================= -->
   <div id="pdfExportWrapper" style="display: none; position: fixed; top: 0; left: 0; width: 100%; z-index: 999998; background: #ffffff; direction: rtl; margin: 0; padding: 0;">
     
-    <!-- 1. حاوية التقرير اليومي PDF -->
+    <!-- 1. حاوية التقرير اليومي PDF (بدون أرقام تليفونات - طبق الأصل تماماً) -->
     <div id="pdfContainer" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 8px !important; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif; margin: 0 !important;">
+      <!-- صف الترويسة 1 -->
       <div style="display: flex; margin-bottom: 2px; direction: ltr; width: 100%;">
         <div style="background-color: #fef08a; padding: 6px 10px; width: 60%; font-weight: bold; font-size: 13px; border: 1px solid #ca8a04; box-sizing: border-box; text-align: left;">
           Daily Attendance Report
@@ -579,6 +581,7 @@
           Date: --/--/----
         </div>
       </div>
+      <!-- صف الترويسة 2 -->
       <div style="display: flex; margin-bottom: 8px; direction: ltr; width: 100%;">
         <div id="pdfPrintTime" style="background-color: #fef08a; padding: 5px 8px; width: 34%; font-size: 10px; border: 1px solid #ca8a04; border-top: none; box-sizing: border-box; text-align: left;">
           Print Time: --:--
@@ -667,6 +670,7 @@
     </div>
 
   </div>
+
   <!-- ================= برمجة النظام والربط بـ Firebase ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -687,13 +691,18 @@
 
     let allServants = [];
     let currentAttendance = {};
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = new Date().toISOString().split("T")[0];
     const currentMonthStr = todayStr.substring(0, 7);
 
-    document.getElementById('adminSelectedDate').value = todayStr;
-    document.getElementById('monthlyReportMonth').value = currentMonthStr;
-    document.getElementById('searchServantStartDate').value = `${currentMonthStr}-01`;
-    document.getElementById('searchServantEndDate').value = todayStr;
+    // ضبط حقول التواريخ بأمان
+    const safeSetVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    };
+    safeSetVal("adminSelectedDate", todayStr);
+    safeSetVal("monthlyReportMonth", currentMonthStr);
+    safeSetVal("searchServantStartDate", currentMonthStr + "-01");
+    safeSetVal("searchServantEndDate", todayStr);
 
     let timingConfig = {
       startTime: "10:00",
@@ -701,11 +710,15 @@
       manualMode: "AUTO"
     };
 
-    setInterval(() => {
+    // تشغيل الساعة وفحص مواعيد التسجيل فوراً دون أي تأخير
+    function updateClockAndStatus() {
       const now = new Date();
-      document.getElementById('liveClock').innerText = now.toLocaleTimeString('ar-EG');
+      const clockEl = document.getElementById("liveClock");
+      if (clockEl) clockEl.innerText = now.toLocaleTimeString("ar-EG");
       checkTimeWindow(now);
-    }, 1000);
+    }
+    updateClockAndStatus();
+    setInterval(updateClockAndStatus, 1000);
 
     function checkTimeWindow(now) {
       const alertBox = document.getElementById('timeStatusAlert');
@@ -1432,8 +1445,7 @@
       });
     };
 
-    // دالة تصدير الـ PDF بدون قص ومعالجة كامل الجدول بدقة متناهية
- // دالة تصدير الـ PDF في منتصف الصفحة بالضبط وبدون أي قص
+    // دالة تصدير الـ PDF في منتصف الصفحة بالضبط وبدون أي قص
     async function generatePdfFromElement(elementId, filename, isLandscape = false) {
       const element = document.getElementById(elementId);
       if (!element) {
@@ -1525,7 +1537,8 @@
         if (overlay) overlay.style.display = "none";
       }
     }
-// 1. تقرير اليوم PDF (متضمناً حضور الخدمة واجتماع الخدام والنسب)
+
+    // 1. تقرير اليوم PDF (متضمناً حضور الخدمة واجتماع الخدام والنسب)
     window.exportCurrentDayPDF = async function() {
       if (allServants.length === 0) {
         alert("قائمة الخدام فارغة! يرجى التأكد من تسجيل الخدام أولاً.");
@@ -1664,11 +1677,15 @@
       await generatePdfFromElement("singleServantPdfContainer", `Attendance_${data.servant.code}_${data.start}_to_${data.end}.pdf`, false);
     };
 
-    // تشغيل النظام وجلب البيانات الأولية
-    await initAdminCredentials();
-    await loadTimingConfig();
-    checkAdminSession();
-    await loadServantsData();
+    // تشغيل النظام وجلب البيانات الأولية بأمان تام وبدون تجميد
+    async function startApp() {
+      try { await initAdminCredentials(); } catch (e) { console.warn("Admin creds error:", e); }
+      try { await loadTimingConfig(); } catch (e) { console.warn("Timing config error:", e); }
+      try { checkAdminSession(); } catch (e) { console.warn("Session error:", e); }
+      try { await loadServantsData(); } catch (e) { console.warn("Servants load error:", e); }
+      updateClockAndStatus();
+    }
+    startApp();
   </script>
 </body>
 </html>
