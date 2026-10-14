@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خدمة الخدام - كنيسة الشهيد العظيم مارمينا</title>
+  <title>خدمة الخدام (النسخة المطورة v2.0) - كنيسة الشهيد العظيم مارمينا</title>
   <!-- Tailwind CSS & الخط العربي Cairo -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
   <style>
     body { font-family: 'Cairo', sans-serif; }
     .church-bg {
-      background-image: linear-gradient(rgba(10, 25, 15, 0.72), rgba(10, 25, 15, 0.82)), 
+      background-image: linear-gradient(rgba(8, 22, 14, 0.78), rgba(6, 18, 12, 0.88)), 
                         url('1790832688461.jpeg'), 
                         url('bg.jpg');
       background-size: cover;
@@ -62,50 +62,38 @@
 </head>
 <body class="church-bg min-h-screen text-gray-100 flex flex-col justify-between">
 
-  <!-- قائمة الفصول المعتمدة لتوحيد الإدخال -->
-  <datalist id="churchClassesList">
-    <option value="حضانة (ملائكة)">
-    <option value="أولى وتانية ابتدائي">
-    <option value="تالتة ورابعة ابتدائي">
-    <option value="خامسة وسادسة ابتدائي">
-    <option value="أولى إعدادي بنين">
-    <option value="تانية إعدادي بنين">
-    <option value="تالتة إعدادي بنين">
-    <option value="إعدادي بنات">
-    <option value="ثانوي بنين">
-    <option value="ثانوي بنات">
-    <option value="شباب وجامعيين">
-    <option value="إخوة الرب">
-    <option value="وسائل إيضاح">
-    <option value="سكرتارية ونظام">
-    <option value="كورال وألحان">
-    <option value="كشافة">
-  </datalist>
-
   <!-- ================= الشريط العلوي ================= -->
-  <header class="bg-black/50 backdrop-blur-md border-b border-green-700/40 sticky top-0 z-30">
+  <header class="bg-slate-950/80 backdrop-blur-md border-b border-emerald-600/40 sticky top-0 z-30 shadow-lg">
     <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-300 font-bold text-lg">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500/30 to-emerald-700/30 border border-amber-400 flex items-center justify-center text-amber-300 font-bold text-xl shadow">
           ☦
         </div>
         <div>
-          <h1 class="text-lg md:text-xl font-extrabold text-amber-200">كنيسة الشهيد العظيم مارمينا</h1>
-          <p class="text-xs text-green-300">نظام حضور وبيانات مجمع الخدام</p>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg md:text-xl font-extrabold text-amber-200">كنيسة الشهيد العظيم مارمينا</h1>
+            <span class="bg-emerald-600/40 border border-emerald-400/50 text-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
+              النسخة المطورة v2.0
+            </span>
+          </div>
+          <p class="text-xs text-emerald-300">المنظومة الذكية لحضور وافتقاد مجمع الخدام</p>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <span id="liveClock" class="text-xs font-mono text-gray-300 bg-black/60 px-3 py-1.5 rounded-lg border border-gray-700"></span>
+        <div class="text-left bg-black/60 px-3 py-1.5 rounded-xl border border-gray-700 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span id="liveClock" class="text-xs font-mono text-amber-200 font-bold"></span>
+        </div>
         
         <div id="authActions">
           <button onclick="openLoginModal()" id="btnOpenLogin" 
-                  class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md flex items-center gap-1.5">
-            🔒 دخول أمين الخدمة (Admin)
+                  class="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5">
+            🔒 لوحة أمين الخدمة
           </button>
           <button onclick="logoutAdmin()" id="btnLogout" 
-                  class="hidden bg-red-600/80 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition">
-            تسجيل خروج
+                  class="hidden bg-red-600/90 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow">
+            🚪 تسجيل خروج الأمين
           </button>
         </div>
       </div>
@@ -113,148 +101,175 @@
   </header>
 
   <!-- ================= المحتوى الرئيسي ================= -->
-  <main class="max-w-6xl mx-auto p-4 flex-1 w-full my-4">
+  <main class="max-w-6xl mx-auto p-4 flex-1 w-full my-3">
 
     <!-- 1. واجهة الخدام العامة المتاحة للجميع أونلاين -->
     <section id="publicServantView" class="space-y-6">
       
-      <!-- أزرار التبويبات العلوية الثلاثة في وش الشاشة -->
+      <!-- أزرار التبويبات العلوية للخدام (مدمجة وواضحة) -->
       <div class="flex justify-center">
-        <div class="bg-black/50 p-1.5 rounded-xl border border-green-600/40 inline-flex flex-wrap justify-center gap-2">
+        <div class="bg-slate-950/80 p-1.5 rounded-2xl border border-emerald-600/40 inline-flex flex-wrap justify-center gap-2 shadow-xl">
           <button onclick="switchPublicTab('checkin')" id="tabBtnCheckin" 
-                  class="px-4 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow transition">
-            ✅ تسجيل حضور الخدمة
+                  class="px-5 py-2.5 rounded-xl font-bold text-sm bg-emerald-700 text-white shadow transition">
+            ✅ تسجيل الحضور (الخدمة والاجتماع)
           </button>
-          <button onclick="switchPublicTab('meeting')" id="tabBtnMeeting" 
-                  class="px-4 py-2 rounded-lg font-bold text-sm text-amber-300 hover:text-white bg-amber-950/40 border border-amber-600/30 transition">
-            🤝 حضور اجتماع الخدام
+          <button onclick="switchPublicTab('myStats')" id="tabBtnMyStats" 
+                  class="px-5 py-2.5 rounded-xl font-bold text-sm text-amber-300 hover:text-white bg-amber-950/40 border border-amber-600/30 transition">
+            📊 متابعة سجل التزامي
           </button>
           <button onclick="switchPublicTab('register')" id="tabBtnRegister" 
-                  class="px-4 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white transition">
-            📝 أنا خادم جديد (تسجيل بياناتي)
+                  class="px-5 py-2.5 rounded-xl font-bold text-sm text-gray-300 hover:text-white transition">
+            📝 تسجيل خادم جديد
           </button>
         </div>
       </div>
 
-      <!-- تبويب 1: تسجيل حضور الخدمة الصباحية -->
-      <div id="checkinTab" class="bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 shadow-2xl max-w-xl mx-auto text-center space-y-4">
-        <h2 class="text-xl font-bold text-amber-200">تسجيل حضور الخدمة</h2>
-        <p id="publicTimeWindowInfo" class="text-xs text-gray-300">جاري تحميل مواعيد التسجيل...</p>
+      <!-- تبويب 1: كارت تسجيل الحضور الموحد والذكي (خدمة + اجتماع الخدام في شاشة واحدة) -->
+      <div id="checkinTab" class="bg-slate-900/95 backdrop-blur-md p-6 rounded-3xl border border-emerald-500/40 shadow-2xl max-w-xl mx-auto text-center space-y-5">
+        <div class="space-y-1">
+          <h2 class="text-2xl font-extrabold text-amber-200">تسجيل حضور الخدام</h2>
+          <p id="publicTimeWindowInfo" class="text-xs text-gray-300">جاري تحميل مواعيد التسجيل...</p>
+        </div>
 
-        <div id="timeStatusAlert" class="p-3 rounded-lg text-xs font-bold border"></div>
+        <div id="timeStatusAlert" class="p-3 rounded-xl text-xs font-bold border"></div>
 
         <!-- شريط الترحيب السريع بالخادم المحفوظ على الموبايل -->
-        <div id="savedServantBanner" class="hidden bg-emerald-950/60 border border-emerald-600/40 px-3 py-2 rounded-xl flex items-center justify-between text-xs text-emerald-200">
-          <span id="savedServantText" class="font-bold"></span>
-          <button onclick="clearSavedServantCode()" class="text-red-300 hover:text-red-200 underline text-[11px]">تغيير الكود</button>
+        <div id="savedServantBanner" class="hidden bg-emerald-950/80 border border-emerald-500/50 px-4 py-2.5 rounded-2xl flex items-center justify-between text-xs text-emerald-200 shadow">
+          <span id="savedServantText" class="font-bold text-sm"></span>
+          <button onclick="clearSavedServantCode()" class="bg-red-900/60 hover:bg-red-800 text-red-200 px-2.5 py-1 rounded-lg text-[11px] font-bold transition">
+            تغيير الكود ✕
+          </button>
         </div>
 
-        <div class="space-y-3 pt-2">
-          <input type="number" id="servantCodeInput" placeholder="أدخل كودك القديم (ID الخاص بك)..." 
+        <div class="space-y-3 pt-1">
+          <label class="block text-xs font-bold text-gray-300">أدخل كودك في الخدمة (يُحفظ تلقائياً على موبايلك):</label>
+          <input type="number" id="servantCodeInput" placeholder="اكتب الكود هنا (مثال: 28)..." 
                  oninput="previewServantByCode(this.value, 'servantPreviewName')"
-                 class="w-full p-3 bg-black/60 border border-green-600/50 rounded-xl text-center text-xl font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
-          <p id="servantPreviewName" class="text-xs text-amber-300 font-bold min-h-[18px]"></p>
-
-          <!-- خيار تسجيل اجتماع الخدام مع الخدمة بضغطة واحدة -->
-          <label class="flex items-center justify-center gap-2 text-xs text-amber-200 cursor-pointer select-none bg-black/40 py-2 px-3 rounded-xl border border-amber-500/30 hover:bg-black/60 transition">
-            <input type="checkbox" id="alsoCheckInMeeting" class="w-4 h-4 accent-amber-500 rounded">
-            <span>تسجيل حضوري في <b>اجتماع الخدام</b> أيضاً مع الخدمة</span>
-          </label>
+                 class="w-full p-3.5 bg-black/70 border-2 border-emerald-500/60 rounded-2xl text-center text-2xl font-extrabold text-amber-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 font-mono">
           
-          <button id="btnSubmitAttendance" onclick="servantSelfCheckIn()" 
-                  class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-base disabled:opacity-50">
-            تأكيد تسجيل حضور الخدمة
+          <!-- معاينة فورية لاسم الخادم وفصله بمجرد كتابة الكود -->
+          <div id="servantPreviewName" class="text-sm font-bold min-h-[24px] py-1"></div>
+
+          <!-- أزرار التسجيل السريع (3 خيارات واضحة في مكان واحد) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <button id="btnSubmitAttendance" onclick="servantSelfCheckIn(false)" 
+                    class="w-full bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-white font-extrabold py-3.5 px-4 rounded-2xl transition shadow-lg text-sm flex items-center justify-center gap-2 disabled:opacity-40">
+              <span>✅ حضور الخدمة فقط</span>
+            </button>
+
+            <button onclick="servantQuickMeetingOnly()" 
+                    class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-extrabold py-3.5 px-4 rounded-2xl transition shadow-lg text-sm flex items-center justify-center gap-2">
+              <span>🤝 حضور اجتماع الخدام فقط</span>
+            </button>
+          </div>
+
+          <button id="btnSubmitBoth" onclick="servantSelfCheckIn(true)" 
+                  class="w-full bg-gradient-to-r from-teal-700 via-emerald-700 to-amber-700 hover:opacity-95 border border-amber-400/50 text-white font-extrabold py-3.5 px-4 rounded-2xl transition shadow-xl text-sm flex items-center justify-center gap-2 disabled:opacity-40">
+            <span>🌟 تسجيل حضور (الخدمة + اجتماع الخدام معاً) بضغطة واحدة</span>
           </button>
         </div>
-        <p id="checkinFeedback" class="text-sm font-semibold min-h-[24px]"></p>
 
-        <!-- كومبو بوكس سريع لحضور اجتماع الخدام منفرداً داخل نفس الكارت -->
-        <div class="mt-4 pt-3 border-t border-gray-700/80">
-          <div class="flex items-center justify-between cursor-pointer select-none bg-black/40 p-2.5 rounded-xl border border-amber-500/40 hover:bg-black/60 transition" onclick="toggleMeetingAccordion()">
-            <div class="flex items-center gap-2">
-              <span class="text-lg">🤝</span>
-              <span class="text-xs font-bold text-amber-200">تسجيل اجتماع الخدام فقط (خارج وقت الخدمة)</span>
-            </div>
-            <span id="meetingToggleLabel" class="text-[11px] bg-amber-600/40 text-amber-300 px-2.5 py-0.5 rounded-lg font-bold">
-              ▼ اضغط لتسجيل كودك
-            </span>
-          </div>
+        <p id="checkinFeedback" class="text-sm font-bold min-h-[24px] pt-1"></p>
+      </div>
 
-          <div id="meetingAccordionContent" class="hidden mt-3 p-3 bg-black/50 rounded-xl border border-amber-500/30 space-y-2 text-right">
-            <p class="text-[11px] text-gray-300">تسجيل مخصص لاجتماع الخدام فقط في أي وقت (يظهر للأمين لتأكيد الحضور).</p>
-            <div class="flex gap-2">
-              <input type="number" id="meetingServantCodeInput" placeholder="أدخل كودك القديم..." 
-                     class="flex-1 p-2 bg-black/70 border border-amber-500/50 rounded-lg text-center text-sm font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
-              <button onclick="servantMeetingCheckIn()" 
-                      class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg transition text-xs shadow">
-                تأكيد حضور الاجتماع
-              </button>
-            </div>
-            <p id="meetingFeedback" class="text-xs text-center font-semibold min-h-[16px]"></p>
+      <!-- تبويب 2 (جديد للخادم): متابعة سجل التزامي وحضوري خلال الشهر -->
+      <div id="myStatsTab" class="hidden bg-slate-900/95 backdrop-blur-md p-6 rounded-3xl border border-amber-500/40 shadow-2xl max-w-xl mx-auto space-y-4">
+        <div class="text-center border-b border-gray-800 pb-3">
+          <h2 class="text-xl font-bold text-amber-200">📊 متابعة سجل حضوري هذا الشهر</h2>
+          <p class="text-xs text-gray-400 mt-1">أدخل كودك لمعرفة عدد مرات حضورك في الخدمة والاجتماع خلال الشهر الحالي</p>
+        </div>
+
+        <div class="flex gap-2">
+          <input type="number" id="myStatsCodeInput" placeholder="أدخل كودك..." 
+                 class="flex-1 p-3 bg-black/70 border border-amber-500/50 rounded-xl text-center text-lg font-bold text-white font-mono outline-none">
+          <button onclick="checkMyPersonalStats()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-3 rounded-xl text-sm shadow transition">
+            عرض سجلي
+          </button>
+        </div>
+
+        <div id="myStatsResultBox" class="hidden space-y-3 pt-2">
+          <div class="bg-black/60 p-4 rounded-2xl border border-gray-700 text-center space-y-1">
+            <h3 id="myStatsName" class="text-lg font-extrabold text-amber-300"></h3>
+            <p id="myStatsClass" class="text-xs text-emerald-300 font-semibold"></p>
           </div>
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="bg-emerald-950/60 p-3 rounded-xl border border-emerald-600/40">
+              <span class="text-xs text-emerald-300 block">حضور الخدمة هذا الشهر</span>
+              <span id="myStatsServiceCount" class="text-xl font-extrabold text-white font-mono">0</span>
+            </div>
+            <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-600/40">
+              <span class="text-xs text-amber-300 block">حضور الاجتماع هذا الشهر</span>
+              <span id="myStatsMeetingCount" class="text-xl font-extrabold text-white font-mono">0</span>
+            </div>
+          </div>
+          <div id="myStatsDatesList" class="bg-black/50 p-3 rounded-xl border border-gray-800 text-xs text-gray-300 space-y-1"></div>
         </div>
       </div>
 
-      <!-- تبويب 2: صفحة مخصصة كاملة لحضور اجتماع الخدام -->
-      <div id="meetingTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-amber-500/40 shadow-2xl max-w-xl mx-auto text-center space-y-4">
-        <h2 class="text-xl font-bold text-amber-200">تسجيل حضور اجتماع الخدام</h2>
-        <p class="text-xs text-gray-300">تسجيل مخصص لاجتماع الخدام فقط (متاح في أي وقت، يظهر بالاسم والكود للأمين لتأكيد الحضور).</p>
-        <div class="space-y-3 pt-2">
-          <input type="number" id="standaloneMeetingCodeInput" placeholder="أدخل كودك القديم (ID الخاص بك)..." 
-                 oninput="previewServantByCode(this.value, 'standaloneMeetingPreviewName')"
-                 class="w-full p-3 bg-black/60 border border-amber-500/50 rounded-xl text-center text-xl font-bold text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
-          <p id="standaloneMeetingPreviewName" class="text-xs text-amber-300 font-bold min-h-[18px]"></p>
-          <button onclick="servantStandaloneMeetingCheckIn()" 
-                  class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-base">
-            تأكيد تسجيل حضور الاجتماع
-          </button>
-        </div>
-        <p id="standaloneMeetingFeedback" class="text-sm font-semibold min-h-[24px]"></p>
-      </div>
-
-      <!-- تبويب 3: تسجيل خادم جديد -->
-      <div id="registerTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 shadow-2xl max-w-2xl mx-auto space-y-4">
+      <!-- تبويب 3: تسجيل خادم جديد (مع قائمة فصول منسدلة حقيقية) -->
+      <div id="registerTab" class="hidden bg-slate-900/95 backdrop-blur-md p-6 rounded-3xl border border-emerald-600/40 shadow-2xl max-w-2xl mx-auto space-y-4">
         <div class="border-b border-gray-700 pb-3">
-          <h2 class="text-xl font-bold text-amber-200">استمارة تسجيل خادم جديد</h2>
-          <p class="text-xs text-gray-300">الكود القديم والاسم والفصل فقط بيانات إجبارية. سيظهر تحذير فوري إذا كان الكود مستخدماً.</p>
+          <h2 class="text-xl font-bold text-amber-200">📝 استمارة تسجيل خادم جديد</h2>
+          <p class="text-xs text-gray-300">الكود والاسم والفصل بيانات أساسية. اختر الفصل من القائمة المنسدلة لتوحيد بيانات الكنيسة.</p>
         </div>
 
         <form id="selfRegisterForm" onsubmit="handleSelfRegister(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
           <div>
             <label class="block text-xs font-bold text-amber-300 mb-1">كود الخادم (الكود القديم) *</label>
             <input type="number" id="regCode" required oninput="checkCodeAvailability()" placeholder="مثال: 28"
-                   class="w-full p-2.5 bg-black/60 border border-amber-500/60 rounded-lg text-sm text-white focus:border-amber-400 outline-none font-mono">
+                   class="w-full p-2.5 bg-black/60 border border-amber-500/60 rounded-xl text-sm text-white focus:border-amber-400 outline-none font-mono">
             <p id="codeAvailabilityMsg" class="text-[11px] mt-1 font-semibold min-h-[16px]"></p>
           </div>
           <div>
-            <label class="block text-xs font-bold text-amber-300 mb-1">الاسم بالكامل *</label>
+            <label class="block text-xs font-bold text-amber-300 mb-1">الاسم ثلاثي أو رباعي *</label>
             <input type="text" id="regName" required placeholder="مثال: كراس صموئيل غطاس"
-                   class="w-full p-2.5 bg-black/60 border border-amber-500/60 rounded-lg text-sm text-white focus:border-amber-400 outline-none">
+                   class="w-full p-2.5 bg-black/60 border border-amber-500/60 rounded-xl text-sm text-white focus:border-amber-400 outline-none">
           </div>
           <div>
             <label class="block text-xs font-bold text-amber-300 mb-1">الفصل / المرحلة *</label>
-            <input type="text" id="regClass" list="churchClassesList" required placeholder="اختر من القائمة أو اكتب اسم الفصل..."
-                   class="w-full p-2.5 bg-black/60 border border-amber-500/60 rounded-lg text-sm text-white focus:border-amber-400 outline-none">
+            <select id="regClassSelect" onchange="toggleCustomClassInput('regClassSelect', 'regClassCustom')" required
+                    class="w-full p-2.5 bg-black/80 border border-amber-500/60 rounded-xl text-sm text-white focus:border-amber-400 outline-none">
+              <option value="">-- اختر الفصل / المرحلة --</option>
+              <option value="حضانة">حضانة</option>
+              <option value="أولى وتانية ابتدائي">أولى وتانية ابتدائي</option>
+              <option value="تالتة ورابعة ابتدائي">تالتة ورابعة ابتدائي</option>
+              <option value="خامسة وسادسة ابتدائي">خامسة وسادسة ابتدائي</option>
+              <option value="أولى إعدادي بنين">أولى إعدادي بنين</option>
+              <option value="تانية إعدادي بنين">تانية إعدادي بنين</option>
+              <option value="تالتة إعدادي بنين">تالتة إعدادي بنين</option>
+              <option value="إعدادي بنات">إعدادي بنات</option>
+              <option value="ثانوي بنين">ثانوي بنين</option>
+              <option value="ثانوي بنات">ثانوي بنات</option>
+              <option value="شباب وجامعيين">شباب وجامعيين</option>
+              <option value="إخوة الرب">إخوة الرب</option>
+              <option value="وسائل إيضاح">وسائل إيضاح</option>
+              <option value="سكرتارية ونظام">سكرتارية ونظام</option>
+              <option value="كورال وألحان">كورال وألحان</option>
+              <option value="كشافة">كشافة</option>
+              <option value="CUSTOM">➕ فصل آخر (اكتبه بنفسك)...</option>
+            </select>
+            <input type="text" id="regClassCustom" placeholder="اكتب اسم الفصل هنا..."
+                   class="hidden mt-2 w-full p-2.5 bg-black/60 border border-emerald-500 rounded-xl text-sm text-white outline-none">
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">رقم الموبايل (اختياري)</label>
+            <label class="block text-xs font-bold text-gray-300 mb-1">رقم الموبايل (مهم للافتقاد والواتساب)</label>
             <input type="tel" id="regPhone" placeholder="012XXXXXXXX"
-                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-green-500 outline-none font-mono">
+                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-green-500 outline-none font-mono">
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">الشغلانة / الوظيفة (اختياري)</label>
-            <input type="text" id="regJob" placeholder="مثال: مهندس برمجيات"
-                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-green-500 outline-none">
+            <label class="block text-xs font-bold text-gray-300 mb-1">الوظيفة / الكلية (اختياري)</label>
+            <input type="text" id="regJob" placeholder="مثال: مهندس / طالب جامعي"
+                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-green-500 outline-none">
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-300 mb-1">أب الاعتراف (اختياري)</label>
             <input type="text" id="regFather" placeholder="مثال: أبونا بولا"
-                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-green-500 outline-none">
+                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-green-500 outline-none">
           </div>
           
           <div class="md:col-span-2 pt-2">
-            <button type="submit" id="btnSubmitRegister" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl transition shadow-lg disabled:opacity-50">
-              حفظ بياناتي في الكنيسة
+            <button type="submit" id="btnSubmitRegister" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-extrabold py-3.5 rounded-xl transition shadow-lg disabled:opacity-50">
+              💾 حفظ بياناتي في قاعدة بيانات الكنيسة
             </button>
           </div>
         </form>
@@ -266,31 +281,31 @@
     <!-- ================= 2. لوحة تحكم الآدمن (المحمية والمخصصة للأمين) ================= -->
     <section id="privateAdminView" class="hidden space-y-6">
       
-      <div class="bg-amber-500/20 border border-amber-500/50 p-4 rounded-xl flex flex-wrap justify-between items-center gap-3 text-amber-200 text-sm">
+      <div class="bg-slate-900/95 border border-amber-500/50 p-4 rounded-2xl flex flex-wrap justify-between items-center gap-3 text-amber-200 text-sm shadow-xl">
         <div class="flex items-center gap-2">
-          <span class="font-bold">لوحة تحكم أمين الخدمة</span>
-          <span class="text-xs bg-emerald-600/50 text-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> متزامن لحظياً
+          <span class="font-extrabold text-base">👑 لوحة تحكم أمين الخدمة</span>
+          <span class="text-xs bg-emerald-600/40 border border-emerald-500/40 text-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> تحديث لحظي مباشر
           </span>
         </div>
         <div class="flex flex-wrap gap-2">
-          <button onclick="switchAdminSubTab('attendance')" id="adminTabBtnAttendance" class="bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow">
-            📋 كشف الحضور اليومي
+          <button onclick="switchAdminSubTab('attendance')" id="adminTabBtnAttendance" class="bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow">
+            📋 الحضور اليومي والافتقاد
           </button>
-          <button onclick="switchAdminSubTab('servantSearch')" id="adminTabBtnServantSearch" class="bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">
-            🔍 بحث خادم لفترة
+          <button onclick="switchAdminSubTab('monthly')" id="adminTabBtnMonthly" class="bg-gray-800 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold">
+            📊 التقرير الشهري الشامل
           </button>
-          <button onclick="switchAdminSubTab('monthly')" id="adminTabBtnMonthly" class="bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">
-            📊 كشف الحضور الشهري
+          <button onclick="switchAdminSubTab('servantSearch')" id="adminTabBtnServantSearch" class="bg-gray-800 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold">
+            🔍 سجل خادم لفترة
           </button>
-          <button onclick="switchAdminSubTab('servantsList')" id="adminTabBtnServantsList" class="bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">
+          <button onclick="switchAdminSubTab('servantsList')" id="adminTabBtnServantsList" class="bg-gray-800 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold">
             👥 إدارة وتعديل الخدام
           </button>
-          <button onclick="switchAdminSubTab('timing')" id="adminTabBtnTiming" class="bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">
-            ⏰ تحكم المواعيد
+          <button onclick="switchAdminSubTab('timing')" id="adminTabBtnTiming" class="bg-gray-800 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold">
+            ⏰ مواعيد التسجيل
           </button>
-          <button onclick="switchAdminSubTab('settings')" id="adminTabBtnSettings" class="bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">
-            ⚙ تغيير الباسورد
+          <button onclick="switchAdminSubTab('settings')" id="adminTabBtnSettings" class="bg-gray-800 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold">
+            ⚙ الباسورد
           </button>
         </div>
       </div>
@@ -298,92 +313,92 @@
       <!-- 2.1 تبويب كشف الحضور اليومي للآدمن -->
       <div id="adminAttendanceSubTab" class="space-y-4">
         
-        <div class="bg-emerald-950/40 border border-emerald-600/40 p-3 rounded-xl flex flex-wrap justify-between items-center text-xs text-emerald-200 gap-2">
-          <span>💡 <b>ملاحظة للأمين:</b> الكشف يتحدث تلقائياً فور تسجيل أي خادم، ويمكنك كتابة ملاحظات أو تصفية الكشف بالفصل.</span>
+        <div class="bg-emerald-950/60 border border-emerald-600/40 p-3.5 rounded-2xl flex flex-wrap justify-between items-center text-xs text-emerald-200 gap-2">
+          <span>💡 <b>مزايا جديدة للأمين:</b> فلترة بالفصل، كتابة ملاحظات وعذر لكل خادم، تنبيه أوتوماتيكي للغائبين، وتصدير PDF و Excel.</span>
           <div class="flex flex-wrap gap-2">
-            <button onclick="exportCurrentDayPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg font-bold text-xs flex items-center gap-1 shadow">
+            <button onclick="exportCurrentDayPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow">
               📄 استخراج PDF لليوم
             </button>
-            <button onclick="exportCurrentDayCSV()" class="bg-teal-700 hover:bg-teal-600 text-white px-3.5 py-2 rounded-lg font-bold text-xs flex items-center gap-1 shadow">
-              📊 تصدير Excel (CSV)
+            <button onclick="exportCurrentDayCSV()" class="bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow">
+              📊 تصدير شيت Excel
             </button>
           </div>
         </div>
 
-        <!-- إحصائيات ونسب الحضور لليوم المحدد -->
+        <!-- إحصائيات ونسب الحضور لليوم المحدد (مع كارت تنبيه الافتقاد التفاعلي) -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-center text-white">
-          <div class="bg-black/60 p-3 rounded-xl border border-gray-700">
-            <span class="text-xs text-gray-400">إجمالي المعروض</span>
-            <p id="adminTotalCount" class="text-xl font-bold">0</p>
+          <div class="bg-slate-900/90 p-3 rounded-2xl border border-gray-700">
+            <span class="text-xs text-gray-400">إجمالي القائمة</span>
+            <p id="adminTotalCount" class="text-xl font-extrabold mt-0.5">0</p>
           </div>
-          <div class="bg-green-950/60 p-3 rounded-xl border border-green-600/50">
+          <div class="bg-green-950/70 p-3 rounded-2xl border border-green-600/50">
             <span class="text-xs text-green-300">حضور الخدمة</span>
-            <p id="adminPresentCount" class="text-xl font-bold text-green-400">0</p>
+            <p id="adminPresentCount" class="text-xl font-extrabold text-green-400 mt-0.5">0</p>
           </div>
-          <div class="bg-blue-950/60 p-3 rounded-xl border border-blue-600/50">
+          <div class="bg-blue-950/70 p-3 rounded-2xl border border-blue-600/50">
             <span class="text-xs text-blue-300">نسبة الخدمة</span>
-            <p id="adminPercentage" class="text-xl font-bold text-blue-300">0%</p>
+            <p id="adminPercentage" class="text-xl font-extrabold text-blue-300 mt-0.5">0%</p>
           </div>
-          <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-600/50">
+          <div class="bg-amber-950/70 p-3 rounded-2xl border border-amber-600/50">
             <span class="text-xs text-amber-300">حضور الاجتماع</span>
-            <p id="adminMeetingPresentCount" class="text-xl font-bold text-amber-400">0</p>
+            <p id="adminMeetingPresentCount" class="text-xl font-extrabold text-amber-400 mt-0.5">0</p>
           </div>
-          <div class="bg-purple-950/60 p-3 rounded-xl border border-purple-600/50">
+          <div class="bg-purple-950/70 p-3 rounded-2xl border border-purple-600/50">
             <span class="text-xs text-purple-300">نسبة الاجتماع</span>
-            <p id="adminMeetingPercentage" class="text-xl font-bold text-purple-300">0%</p>
+            <p id="adminMeetingPercentage" class="text-xl font-extrabold text-purple-300 mt-0.5">0%</p>
           </div>
-          <div class="bg-red-950/60 p-3 rounded-xl border border-red-600/50">
-            <span class="text-xs text-red-300">تنبيه افتقاد (غياب متكرر)</span>
-            <p id="adminVisitationAlertCount" class="text-xl font-bold text-red-400">0</p>
+          <div onclick="filterByVisitationNeeded()" class="cursor-pointer bg-red-950/70 hover:bg-red-900/70 transition p-3 rounded-2xl border border-red-500/60" title="اضغط لعرض الخدام الذين يحتاجون افتقاد">
+            <span class="text-xs text-red-300 font-bold">🔔 يحتاجون افتقاد</span>
+            <p id="adminVisitationAlertCount" class="text-xl font-extrabold text-red-400 mt-0.5">0</p>
           </div>
         </div>
 
         <!-- أدوات التحكم والبحث والفلترة والتاريخ -->
-        <div class="bg-black/60 p-4 rounded-xl border border-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-center">
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-gray-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-center">
           <div>
-            <label class="block text-[11px] text-gray-400 mb-1">بحث بالاسم أو الكود:</label>
+            <label class="block text-[11px] text-gray-400 mb-1">🔍 بحث بالاسم أو الكود:</label>
             <input type="text" id="adminSearchInput" oninput="renderAdminAttendanceTable()" placeholder="ابحث باسم الخادم أو الكود..." 
-                   class="w-full p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none">
+                   class="w-full p-2.5 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none focus:border-amber-500">
           </div>
           <div>
-            <label class="block text-[11px] text-gray-400 mb-1">تصفية حسب الفصل:</label>
+            <label class="block text-[11px] text-gray-400 mb-1">🏫 تصفية حسب الفصل:</label>
             <select id="adminClassFilter" onchange="renderAdminAttendanceTable()"
-                    class="w-full p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none">
+                    class="w-full p-2.5 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none focus:border-amber-500">
               <option value="ALL">كل الفصول والمراحل</option>
             </select>
           </div>
           <div>
-            <label class="block text-[11px] text-gray-400 mb-1">حالة الحضور / الافتقاد:</label>
+            <label class="block text-[11px] text-gray-400 mb-1">📌 حالة الحضور / الافتقاد:</label>
             <select id="adminStatusFilter" onchange="renderAdminAttendanceTable()"
-                    class="w-full p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none">
+                    class="w-full p-2.5 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none focus:border-amber-500">
               <option value="ALL">الكل (حاضر وغائب)</option>
-              <option value="SERVICE_PRESENT">حاضرو الخدمة فقط</option>
-              <option value="SERVICE_ABSENT">غائبو الخدمة فقط</option>
-              <option value="MEETING_PRESENT">حاضرو الاجتماع فقط</option>
-              <option value="NEEDS_VISITATION">⚠️ يحتاج افتقاد (غياب متتالي)</option>
+              <option value="SERVICE_PRESENT">✅ حاضرو الخدمة فقط</option>
+              <option value="SERVICE_ABSENT">❌ غائبو الخدمة فقط</option>
+              <option value="MEETING_PRESENT">🤝 حاضرو الاجتماع فقط</option>
+              <option value="NEEDS_VISITATION">⚠️ يحتاج افتقاد (غائب مرتين أو أكثر)</option>
             </select>
           </div>
           <div>
-            <label class="block text-[11px] text-amber-300 font-bold mb-1">تاريخ الخدمة:</label>
+            <label class="block text-[11px] text-amber-300 font-bold mb-1">📅 تاريخ الخدمة:</label>
             <input type="date" id="adminSelectedDate" onchange="subscribeToAttendanceForDate()" 
-                   class="w-full p-2 bg-gray-900 border border-amber-600/50 rounded-lg text-xs text-white outline-none font-mono">
+                   class="w-full p-2.5 bg-black/70 border border-amber-500/60 rounded-xl text-xs text-white outline-none font-mono">
           </div>
         </div>
 
-        <!-- جدول الخدام اليومي (الخدمة واجتماع الخدام والملاحظات) -->
-        <div class="bg-black/70 rounded-xl border border-gray-700 overflow-x-auto">
+        <!-- جدول الخدام اليومي (الخدمة واجتماع الخدام والملاحظات والواتساب) -->
+        <div class="bg-slate-950/90 rounded-2xl border border-gray-700 overflow-x-auto shadow-2xl">
           <table class="w-full text-right text-xs">
-            <thead class="bg-green-900/80 text-amber-200">
+            <thead class="bg-emerald-900/90 text-amber-200">
               <tr>
                 <th class="p-3">الكود</th>
-                <th class="p-3">اسم الخادم</th>
+                <th class="p-3">اسم الخادم والتواصل</th>
                 <th class="p-3">الفصل</th>
                 <th class="p-3 text-center">حضور الخدمة</th>
                 <th class="p-3 text-center">توقيت الخدمة</th>
                 <th class="p-3 text-center">رصد الخدمة</th>
                 <th class="p-3 text-center">اجتماع الخدام</th>
                 <th class="p-3 text-center">تأكيد الاجتماع</th>
-                <th class="p-3">ملاحظات (عذر / تأخير)</th>
+                <th class="p-3">ملاحظات اليوم (عذر / تأخير)</th>
               </tr>
             </thead>
             <tbody id="adminAttendanceTableBody" class="divide-y divide-gray-800 text-gray-200"></tbody>
@@ -393,68 +408,68 @@
 
       <!-- 2.2 تبويب بحث خادم معين لفترة معينة -->
       <div id="adminServantSearchSubTab" class="hidden space-y-4">
-        <div class="bg-black/60 p-5 rounded-xl border border-gray-700 space-y-4">
-          <h3 class="text-base font-bold text-amber-200 border-b border-gray-700 pb-2">البحث عن سجل خادم معين خلال فترة زمنية</h3>
+        <div class="bg-slate-900/90 p-5 rounded-2xl border border-gray-700 space-y-4">
+          <h3 class="text-base font-bold text-amber-200 border-b border-gray-700 pb-2">🔍 البحث عن سجل خادم معين خلال فترة زمنية</h3>
           
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label class="block text-xs font-bold text-gray-300 mb-1">كود الخادم (أو اختر بالاسم):</label>
+              <label class="block text-xs font-bold text-gray-300 mb-1">اختر الخادم أو اكتب كوده:</label>
               <input type="number" id="searchServantCodeInput" list="servantsCodesDatalist" placeholder="اكتب كود الخادم (مثال: 28)"
-                     class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white font-mono outline-none">
+                     class="w-full p-2.5 bg-black/70 border border-gray-700 rounded-xl text-sm text-white font-mono outline-none">
               <datalist id="servantsCodesDatalist"></datalist>
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-300 mb-1">من تاريخ:</label>
               <input type="date" id="searchServantStartDate" 
-                     class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white outline-none font-mono">
+                     class="w-full p-2.5 bg-black/70 border border-gray-700 rounded-xl text-sm text-white outline-none font-mono">
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-300 mb-1">إلى تاريخ:</label>
               <input type="date" id="searchServantEndDate" 
-                     class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white outline-none font-mono">
+                     class="w-full p-2.5 bg-black/70 border border-gray-700 rounded-xl text-sm text-white outline-none font-mono">
             </div>
           </div>
 
           <div class="flex flex-wrap justify-end gap-2">
-            <button onclick="executeServantRangeSearch()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2 rounded-lg text-xs transition">
+            <button onclick="executeServantRangeSearch()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition shadow">
               🔍 عرض تقرير الخادم
             </button>
-            <button id="btnExportSingleServantPDF" onclick="exportSingleServantPDF()" class="hidden bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-4 py-2 rounded-lg text-xs transition">
+            <button id="btnExportSingleServantPDF" onclick="exportSingleServantPDF()" class="hidden bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow">
               📄 استخراج PDF للخادم
             </button>
-            <button id="btnExportSingleServantCSV" onclick="exportSingleServantCSV()" class="hidden bg-teal-700 hover:bg-teal-600 text-white font-bold px-4 py-2 rounded-lg text-xs transition">
-              📊 تصدير Excel (CSV)
+            <button id="btnExportSingleServantCSV" onclick="exportSingleServantCSV()" class="hidden bg-teal-700 hover:bg-teal-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow">
+              📊 تصدير شيت Excel
             </button>
           </div>
         </div>
 
         <div id="singleServantResultArea" class="hidden space-y-3">
-          <div class="bg-slate-900/90 border border-amber-500/40 p-4 rounded-xl flex flex-wrap justify-between items-center gap-3 text-sm">
+          <div class="bg-slate-900/95 border border-amber-500/40 p-4 rounded-2xl flex flex-wrap justify-between items-center gap-3 text-sm">
             <div>
               <h4 id="singleServantNameHeader" class="text-base font-bold text-amber-200">الاسم: --</h4>
               <p id="singleServantSubInfo" class="text-xs text-gray-300 mt-1">الكود: -- | الفصل: -- | أب الاعتراف: --</p>
             </div>
             <div class="flex flex-wrap gap-3 text-center">
-              <div class="bg-green-950/60 px-3 py-1.5 rounded-lg border border-green-700">
+              <div class="bg-green-950/60 px-3 py-1.5 rounded-xl border border-green-700">
                 <span class="text-[10px] text-green-300 block">حضور الخدمة</span>
                 <span id="singleServantPresentCount" class="font-bold text-green-400 font-mono text-base">0</span>
               </div>
-              <div class="bg-blue-950/60 px-3 py-1.5 rounded-lg border border-blue-700">
+              <div class="bg-blue-950/60 px-3 py-1.5 rounded-xl border border-blue-700">
                 <span class="text-[10px] text-blue-300 block">نسبة الخدمة</span>
                 <span id="singleServantPercentage" class="font-bold text-blue-300 font-mono text-base">0%</span>
               </div>
-              <div class="bg-amber-950/60 px-3 py-1.5 rounded-lg border border-amber-700">
+              <div class="bg-amber-950/60 px-3 py-1.5 rounded-xl border border-amber-700">
                 <span class="text-[10px] text-amber-300 block">حضور الاجتماع</span>
                 <span id="singleServantAbsentCount" class="font-bold text-amber-400 font-mono text-base">0</span>
               </div>
-              <div class="bg-purple-950/60 px-3 py-1.5 rounded-lg border border-purple-700">
+              <div class="bg-purple-950/60 px-3 py-1.5 rounded-xl border border-purple-700">
                 <span class="text-[10px] text-purple-300 block">نسبة الاجتماع</span>
                 <span id="singleServantMeetingPercentage" class="font-bold text-purple-300 font-mono text-base">0%</span>
               </div>
             </div>
           </div>
 
-          <div class="bg-black/70 rounded-xl border border-gray-700 overflow-x-auto p-3">
+          <div class="bg-slate-950/90 rounded-2xl border border-gray-700 overflow-x-auto p-3">
             <table class="w-full text-right text-xs">
               <thead class="bg-emerald-900/90 text-white">
                 <tr>
@@ -472,39 +487,39 @@
         </div>
       </div>
 
-      <!-- 2.3 تبويب كشف الحضور الشهري (تم إصلاحه بالكامل + فلترة وتصدير) -->
+      <!-- 2.3 تبويب كشف الحضور الشهري (شغال بالكامل + فلترة وتصدير) -->
       <div id="adminMonthlySubTab" class="hidden space-y-4">
-        <div class="bg-black/60 p-4 rounded-xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
           <div class="flex flex-wrap items-center gap-3">
             <div>
-              <label class="block text-[11px] text-amber-300 font-bold mb-1">اختر الشهر والسنة:</label>
+              <label class="block text-[11px] text-amber-300 font-bold mb-1">📅 اختر الشهر والسنة:</label>
               <input type="month" id="monthlyReportMonth" onchange="loadMonthlyAttendance()"
-                     class="p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none font-mono">
+                     class="p-2 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none font-mono">
             </div>
             <div>
-              <label class="block text-[11px] text-gray-400 mb-1">تصفية حسب الفصل:</label>
+              <label class="block text-[11px] text-gray-400 mb-1">🏫 تصفية حسب الفصل:</label>
               <select id="monthlyClassFilter" onchange="renderMonthlyTableUI()"
-                      class="p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none">
+                      class="p-2 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none">
                 <option value="ALL">كل الفصول والمراحل</option>
               </select>
             </div>
             <div>
-              <label class="block text-[11px] text-gray-400 mb-1">بحث بالاسم أو الكود:</label>
+              <label class="block text-[11px] text-gray-400 mb-1">🔍 بحث بالاسم أو الكود:</label>
               <input type="text" id="monthlySearchInput" oninput="renderMonthlyTableUI()" placeholder="ابحث في الشهر..."
-                     class="p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none">
+                     class="p-2 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none">
             </div>
           </div>
           <div class="flex flex-wrap gap-2">
-            <button onclick="exportMonthlyPDF()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-1 shadow">
+            <button onclick="exportMonthlyPDF()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1 shadow">
               📄 استخراج التقرير الشهري (PDF)
             </button>
-            <button onclick="exportMonthlyCSV()" class="bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-1 shadow">
-              📊 تصدير Excel (CSV)
+            <button onclick="exportMonthlyCSV()" class="bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1 shadow">
+              📊 تصدير شيت Excel
             </button>
           </div>
         </div>
 
-        <div class="bg-black/70 rounded-xl border border-gray-700 overflow-x-auto p-4">
+        <div class="bg-slate-950/90 rounded-2xl border border-gray-700 overflow-x-auto p-4">
           <div class="flex flex-wrap justify-between items-center mb-3 gap-2">
             <h4 id="monthlyTitleLabel" class="text-sm font-bold text-amber-200">سجل حضور الخدام الشهري</h4>
             <span id="monthlyDaysSummary" class="text-xs text-emerald-300 bg-emerald-950/60 px-3 py-1 rounded-lg border border-emerald-700/50"></span>
@@ -529,31 +544,31 @@
 
       <!-- 2.4 تبويب إدارة وتعديل وإزالة الخدام -->
       <div id="adminServantsListSubTab" class="hidden space-y-4">
-        <div class="bg-black/60 p-4 rounded-xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-gray-700 flex flex-wrap justify-between items-center gap-3">
           <div>
-            <h3 class="text-sm font-bold text-amber-200">قائمة جميع الخدام المسجلين (إضافة / تعديل / افتقاد / إنهاء خدمة)</h3>
-            <p class="text-xs text-gray-400">يمكنك تعديل بيانات أي خادم أو التواصل معه عبر واتساب أو تصدير قاعدة بيانات الخدام.</p>
+            <h3 class="text-sm font-bold text-amber-200">👥 قائمة جميع الخدام المسجلين (إضافة / تعديل بيانات / واتساب / حذف)</h3>
+            <p class="text-xs text-gray-400">يمكنك تعديل بيانات أي خادم أو مراسلته عبر واتساب أو تصدير بيانات الخدام بالكامل.</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <input type="text" id="servantsListSearchInput" oninput="renderFullServantsListTable()" placeholder="ابحث باسم الخادم أو كوده أو فصله..."
-                   class="w-64 p-2 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white outline-none">
-            <button onclick="openEditServantModal(null)" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-lg text-xs font-bold shadow">
+                   class="w-64 p-2 bg-black/70 border border-gray-700 rounded-xl text-xs text-white outline-none">
+            <button onclick="openEditServantModal(null)" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow">
               ➕ إضافة خادم جديد
             </button>
-            <button onclick="exportServantsListCSV()" class="bg-teal-700 hover:bg-teal-600 text-white px-3 py-2 rounded-lg text-xs font-bold shadow">
+            <button onclick="exportServantsListCSV()" class="bg-teal-700 hover:bg-teal-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow">
               📊 تصدير بيانات الخدام (Excel)
             </button>
           </div>
         </div>
 
-        <div class="bg-black/70 rounded-xl border border-gray-700 overflow-x-auto">
+        <div class="bg-slate-950/90 rounded-2xl border border-gray-700 overflow-x-auto">
           <table class="w-full text-right text-xs">
             <thead class="bg-slate-900 text-amber-300">
               <tr>
                 <th class="p-3">الكود</th>
                 <th class="p-3">اسم الخادم</th>
                 <th class="p-3">الفصل</th>
-                <th class="p-3">رقم الموبايل</th>
+                <th class="p-3">رقم الموبايل والواتساب</th>
                 <th class="p-3">الوظيفة / العمل</th>
                 <th class="p-3">أب الاعتراف</th>
                 <th class="p-3 text-center">إجراءات (تعديل / حذف)</th>
@@ -565,41 +580,41 @@
       </div>
 
       <!-- 2.5 تبويب تحكم المواعيد -->
-      <div id="adminTimingSubTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 max-w-lg mx-auto space-y-4">
-        <h3 class="text-lg font-bold text-amber-200 border-b border-gray-700 pb-2">التحكم في مواعيد تسجيل الحضور</h3>
-        <p class="text-xs text-gray-300">حدد وقت بداية ونهاية التسجيل (افتراضياً يغلق 10:35 صباحاً)، أو افتح/اقفل التسجيل يدوياً في أي لحظة.</p>
+      <div id="adminTimingSubTab" class="hidden bg-slate-900/95 backdrop-blur-md p-6 rounded-2xl border border-green-600/30 max-w-lg mx-auto space-y-4">
+        <h3 class="text-lg font-bold text-amber-200 border-b border-gray-700 pb-2">⏰ التحكم في مواعيد تسجيل الحضور</h3>
+        <p class="text-xs text-gray-300">حدد وقت بداية ونهاية التسجيل، أو افتح/اقفل التسجيل يدوياً في أي لحظة.</p>
 
         <form id="timingConfigForm" onsubmit="handleSaveTiming(event)" class="space-y-4">
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-bold text-gray-300 mb-1">وقت فتح التسجيل:</label>
               <input type="time" id="cfgStartTime" required value="10:00"
-                     class="w-full p-2 bg-black/60 border border-gray-700 rounded-lg text-sm text-white font-mono outline-none">
+                     class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white font-mono outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-300 mb-1">وقت غلق التسجيل:</label>
               <input type="time" id="cfgEndTime" required value="10:35"
-                     class="w-full p-2 bg-black/60 border border-gray-700 rounded-lg text-sm text-white font-mono outline-none">
+                     class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white font-mono outline-none">
             </div>
           </div>
 
           <div class="border-t border-gray-800 pt-3">
             <label class="block text-xs font-bold text-amber-300 mb-2">التحكم اليدوي المباشر:</label>
             <div class="flex gap-2">
-              <button type="button" onclick="setManualOverride('OPEN')" class="flex-1 bg-green-700 hover:bg-green-600 text-white py-2 rounded-lg text-xs font-bold">
+              <button type="button" onclick="setManualOverride('OPEN')" class="flex-1 bg-green-700 hover:bg-green-600 text-white py-2.5 rounded-xl text-xs font-bold">
                 🔓 فتح الآن
               </button>
-              <button type="button" onclick="setManualOverride('CLOSED')" class="flex-1 bg-red-700 hover:bg-red-600 text-white py-2 rounded-lg text-xs font-bold">
+              <button type="button" onclick="setManualOverride('CLOSED')" class="flex-1 bg-red-700 hover:bg-red-600 text-white py-2.5 rounded-xl text-xs font-bold">
                 🔒 قفل الآن
               </button>
-              <button type="button" onclick="setManualOverride('AUTO')" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg text-xs font-bold">
+              <button type="button" onclick="setManualOverride('AUTO')" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2.5 rounded-xl text-xs font-bold">
                 ⏰ تفعيل الجدول
               </button>
             </div>
             <p id="manualStatusLabel" class="text-[11px] text-gray-400 mt-2 text-center"></p>
           </div>
 
-          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2.5 rounded-lg transition text-sm">
+          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2.5 rounded-xl transition text-sm">
             حفظ إعدادات المواعيد
           </button>
         </form>
@@ -607,22 +622,22 @@
       </div>
 
       <!-- 2.6 تبويب تغيير الباسورد -->
-      <div id="adminSettingsSubTab" class="hidden bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-amber-500/30 max-w-lg mx-auto space-y-4">
-        <h3 class="text-lg font-bold text-amber-200 border-b border-gray-700 pb-2">تغيير اسم المستخدم وكلمة المرور للأدمن</h3>
+      <div id="adminSettingsSubTab" class="hidden bg-slate-900/95 backdrop-blur-md p-6 rounded-2xl border border-amber-500/30 max-w-lg mx-auto space-y-4">
+        <h3 class="text-lg font-bold text-amber-200 border-b border-gray-700 pb-2">⚙ تغيير اسم المستخدم وكلمة المرور للأدمن</h3>
         <p class="text-xs text-gray-400">يمكنك تعديل بيانات الدخول في أي وقت، وسيتم حفظها مباشرة في قاعدة البيانات السحابية.</p>
 
         <form id="changeCredentialsForm" onsubmit="handleChangeCredentials(event)" class="space-y-3">
           <div>
             <label class="block text-xs text-gray-300 mb-1">اسم المستخدم الجديد (Username)</label>
             <input type="text" id="newAdminUsername" required placeholder="admin" 
-                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-amber-500 outline-none">
+                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-amber-500 outline-none">
           </div>
           <div>
             <label class="block text-xs text-gray-300 mb-1">كلمة المرور الجديدة (New Password)</label>
             <input type="password" id="newAdminPassword" required placeholder="أدخل كلمة المرور الجديدة" 
-                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-amber-500 outline-none">
+                   class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-amber-500 outline-none">
           </div>
-          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
+          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl transition text-sm">
             حفظ البيانات الجديدة
           </button>
         </form>
@@ -655,38 +670,38 @@
         <div>
           <label class="block text-xs font-bold text-amber-300 mb-1">كود الخادم *</label>
           <input type="number" id="modalServantCode" required
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white font-mono outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white font-mono outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-amber-300 mb-1">الاسم بالكامل *</label>
           <input type="text" id="modalServantName" required
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-amber-300 mb-1">الفصل / المرحلة *</label>
-          <input type="text" id="modalServantClass" list="churchClassesList" required
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white outline-none">
+          <input type="text" id="modalServantClass" required placeholder="مثال: أولى إعدادي بنين"
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-300 mb-1">رقم الموبايل</label>
           <input type="tel" id="modalServantPhone"
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white font-mono outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white font-mono outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-300 mb-1">الوظيفة / العمل</label>
           <input type="text" id="modalServantJob"
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-300 mb-1">أب الاعتراف</label>
           <input type="text" id="modalServantFather"
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white outline-none">
         </div>
         <div class="sm:col-span-2 pt-2 flex gap-2">
-          <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-xs transition shadow">
-            💾 حفظ البيانات
+          <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+            💾 حفظ التعديلات
           </button>
-          <button type="button" onclick="closeEditServantModal()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold px-5 py-2.5 rounded-lg text-xs transition">
+          <button type="button" onclick="closeEditServantModal()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
             إلغاء
           </button>
         </div>
@@ -707,14 +722,14 @@
         <div>
           <label class="block text-xs text-gray-300 mb-1">اسم المستخدم (Username)</label>
           <input type="text" id="loginUsername" required placeholder="admin" 
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-amber-500 outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-amber-500 outline-none">
         </div>
         <div>
           <label class="block text-xs text-gray-300 mb-1">كلمة المرور (Password)</label>
           <input type="password" id="loginPassword" required placeholder="••••••••" 
-                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-lg text-sm text-white focus:border-amber-500 outline-none">
+                 class="w-full p-2.5 bg-black/60 border border-gray-700 rounded-xl text-sm text-white focus:border-amber-500 outline-none">
         </div>
-        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-lg transition text-sm">
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl transition text-sm">
           دخول للوحة التحكم
         </button>
       </form>
@@ -722,12 +737,11 @@
     </div>
   </div>
 
-  <!-- ================= حاويات تقارير الـ PDF الموحدة (100% بدون أي قص نهائياً) ================= -->
+  <!-- ================= حاويات تقارير الـ PDF الموحدة ================= -->
   <div id="pdfExportWrapper" style="display: none; position: fixed; top: 0; left: 0; width: 100%; z-index: 999998; background: #ffffff; direction: rtl; margin: 0; padding: 0;">
     
     <!-- 1. حاوية التقرير اليومي PDF -->
     <div id="pdfContainer" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 8px !important; background: white; color: black; direction: rtl; font-family: 'Cairo', sans-serif; margin: 0 !important;">
-      <!-- صف الترويسة 1 -->
       <div style="display: flex; margin-bottom: 2px; direction: ltr; width: 100%;">
         <div id="pdfHeaderTitleBox" style="background-color: #fef08a; padding: 6px 10px; width: 60%; font-weight: bold; font-size: 13px; border: 1px solid #ca8a04; box-sizing: border-box; text-align: left;">
           Daily Attendance Report
@@ -736,7 +750,6 @@
           Date: --/--/----
         </div>
       </div>
-      <!-- صف الترويسة 2 -->
       <div style="display: flex; margin-bottom: 8px; direction: ltr; width: 100%;">
         <div id="pdfPrintTime" style="background-color: #fef08a; padding: 5px 8px; width: 34%; font-size: 10px; border: 1px solid #ca8a04; border-top: none; box-sizing: border-box; text-align: left;">
           Print Time: --:--
@@ -848,10 +861,10 @@
     let currentAttendance = {};
     let monthlyMeetingDates = [];
     let monthlyRecords = [];
-    let recentAbsenceStreaks = {}; // servantCode -> consecutive absences count
+    let recentAbsenceStreaks = {};
     let attendanceUnsubscribe = null;
 
-    // دالة حساب تاريخ اليوم بالتوقيت المحلي لمصر بدقة (وليس UTC)
+    // دالة حساب تاريخ اليوم بالتوقيت المحلي لمصر بدقة
     function getLocalTodayStr() {
       const d = new Date();
       const year = d.getFullYear();
@@ -863,7 +876,6 @@
     const todayStr = getLocalTodayStr();
     const currentMonthStr = todayStr.substring(0, 7);
 
-    // ضبط حقول التواريخ بأمان
     const safeSetVal = (id, val) => {
       const el = document.getElementById(id);
       if (el) el.value = val;
@@ -879,7 +891,6 @@
       manualMode: "AUTO"
     };
 
-    // تشغيل الساعة وفحص مواعيد التسجيل فوراً دون أي تأخير
     function updateClockAndStatus() {
       const now = new Date();
       const clockEl = document.getElementById("liveClock");
@@ -892,21 +903,24 @@
     function checkTimeWindow(now) {
       const alertBox = document.getElementById('timeStatusAlert');
       const submitBtn = document.getElementById('btnSubmitAttendance');
+      const submitBothBtn = document.getElementById('btnSubmitBoth');
       const timeInfo = document.getElementById('publicTimeWindowInfo');
 
-      timeInfo.innerText = `مواعيد التسجيل المعتمدة: من الساعة ${timingConfig.startTime} حتى الساعة ${timingConfig.endTime} صباحاً.`;
+      timeInfo.innerText = `مواعيد تسجيل الخدمة الصباحية: من ${timingConfig.startTime} إلى ${timingConfig.endTime} صباحاً (اجتماع الخدام متاح في أي وقت).`;
 
       if (timingConfig.manualMode === "OPEN") {
-        alertBox.className = "p-3 rounded-lg text-xs font-bold border bg-green-900/50 text-green-300 border-green-700/60";
-        alertBox.innerText = "🟢 تسجيل الحضور مفتوح الآن بقرار أمين الخدمة.";
+        alertBox.className = "p-3 rounded-xl text-xs font-bold border bg-green-900/50 text-green-300 border-green-700/60";
+        alertBox.innerText = "🟢 تسجيل حضور الخدمة مفتوح الآن بقرار أمين الخدمة.";
         submitBtn.disabled = false;
+        if (submitBothBtn) submitBothBtn.disabled = false;
         return;
       }
 
       if (timingConfig.manualMode === "CLOSED") {
-        alertBox.className = "p-3 rounded-lg text-xs font-bold border bg-red-900/50 text-red-300 border-red-700/60";
-        alertBox.innerText = "🔴 تسجيل الحضور مغلق حالياً بقرار أمين الخدمة.";
+        alertBox.className = "p-3 rounded-xl text-xs font-bold border bg-red-900/50 text-red-300 border-red-700/60";
+        alertBox.innerText = "🔴 تسجيل حضور الخدمة مغلق حالياً (يمكنك فقط تسجيل حضور اجتماع الخدام).";
         submitBtn.disabled = true;
+        if (submitBothBtn) submitBothBtn.disabled = true;
         return;
       }
 
@@ -917,17 +931,20 @@
       const endMinutes = endH * 60 + endM;
 
       if (currentMinutes < startMinutes) {
-        alertBox.className = "p-3 rounded-lg text-xs font-bold border bg-yellow-900/40 text-yellow-300 border-yellow-700/50";
-        alertBox.innerText = `⏳ تسجيل الحضور لم يبدأ بعد (يفتح في تمام الساعة ${timingConfig.startTime} صباحاً).`;
+        alertBox.className = "p-3 rounded-xl text-xs font-bold border bg-yellow-900/40 text-yellow-300 border-yellow-700/50";
+        alertBox.innerText = `⏳ تسجيل حضور الخدمة يفتح الساعة ${timingConfig.startTime} صباحاً (زر اجتماع الخدام متاح الآن).`;
         submitBtn.disabled = true;
+        if (submitBothBtn) submitBothBtn.disabled = true;
       } else if (currentMinutes >= startMinutes && currentMinutes <= endMinutes) {
-        alertBox.className = "p-3 rounded-lg text-xs font-bold border bg-green-900/40 text-green-300 border-green-700/50";
-        alertBox.innerText = `🟢 فترة التسجيل مفتوحة الآن (متاحة حتى ${timingConfig.endTime} صباحاً).`;
+        alertBox.className = "p-3 rounded-xl text-xs font-bold border bg-green-900/40 text-green-300 border-green-700/50";
+        alertBox.innerText = `🟢 فترة تسجيل الخدمة مفتوحة الآن (حتى ${timingConfig.endTime} صباحاً).`;
         submitBtn.disabled = false;
+        if (submitBothBtn) submitBothBtn.disabled = false;
       } else {
-        alertBox.className = "p-3 rounded-lg text-xs font-bold border bg-red-900/40 text-red-300 border-red-700/50";
-        alertBox.innerText = `🔴 انتهت فترة الحضور لليوم (أُغلقت عند ${timingConfig.endTime} صباحاً).`;
+        alertBox.className = "p-3 rounded-xl text-xs font-bold border bg-red-900/40 text-red-300 border-red-700/50";
+        alertBox.innerText = `🔴 انتهى وقت تسجيل الخدمة الصباحية (${timingConfig.endTime}) — يمكنك تسجيل حضور اجتماع الخدام بالزر الأصفر.`;
         submitBtn.disabled = true;
+        if (submitBothBtn) submitBothBtn.disabled = true;
       }
     }
 
@@ -975,22 +992,34 @@
       }
     }
 
-    // ================= ميزة حفظ كود الخادم على الموبايل والمعاينة الفورية =================
+    // إظهار حقل كتابة الفصل اليدوي إذا اختار "فصل آخر"
+    window.toggleCustomClassInput = function(selectId, customInputId) {
+      const sel = document.getElementById(selectId);
+      const customInp = document.getElementById(customInputId);
+      if (!sel || !customInp) return;
+      if (sel.value === "CUSTOM") {
+        customInp.classList.remove("hidden");
+        customInp.required = true;
+      } else {
+        customInp.classList.add("hidden");
+        customInp.required = false;
+      }
+    };
+
+    // معاينة اسم الخادم وحفظ الكود على الموبايل
     window.previewServantByCode = function(val, targetId) {
       const target = document.getElementById(targetId);
       if (!target) return;
       const code = parseInt(val);
       if (!code) {
-        target.innerText = "";
+        target.innerHTML = "";
         return;
       }
       const s = allServants.find(x => x.code === code);
       if (s) {
-        target.className = "text-xs text-amber-300 font-bold min-h-[18px]";
-        target.innerText = `👤 الخادم: ${s.name} (${s.class || 'بدون فصل'})`;
+        target.innerHTML = `<span class="bg-emerald-950/80 border border-emerald-500/40 text-emerald-200 px-3 py-1 rounded-xl inline-block">👤 الخادم: <b>${s.name}</b> — الفصل: <b>${s.class || 'غير محدد'}</b></span>`;
       } else {
-        target.className = "text-xs text-red-400 font-semibold min-h-[18px]";
-        target.innerText = `⚠️ هذا الكود غير مسجل بعد`;
+        target.innerHTML = `<span class="bg-red-950/80 border border-red-500/40 text-red-300 px-3 py-1 rounded-xl inline-block">⚠️ هذا الكود (${code}) غير مسجل! اضغط على تبويب (تسجيل خادم جديد)</span>`;
       }
     };
 
@@ -1005,13 +1034,11 @@
       const s = allServants.find(x => x.code === parseInt(savedCode));
       if (s) {
         safeSetVal("servantCodeInput", s.code);
-        safeSetVal("standaloneMeetingCodeInput", s.code);
-        safeSetVal("meetingServantCodeInput", s.code);
+        safeSetVal("myStatsCodeInput", s.code);
         previewServantByCode(s.code, "servantPreviewName");
-        previewServantByCode(s.code, "standaloneMeetingPreviewName");
         if (banner && bannerText) {
           banner.classList.remove("hidden");
-          bannerText.innerText = `👋 مرحباً بك يا ${s.name} (كود: ${s.code})`;
+          bannerText.innerText = `👋 أهلاً بعودتك يا ${s.name} (كودك المحفوظ: ${s.code})`;
         }
       }
     }
@@ -1019,111 +1046,108 @@
     window.clearSavedServantCode = function() {
       localStorage.removeItem("marmina_saved_servant_code");
       safeSetVal("servantCodeInput", "");
-      safeSetVal("standaloneMeetingCodeInput", "");
-      safeSetVal("meetingServantCodeInput", "");
+      safeSetVal("myStatsCodeInput", "");
       previewServantByCode("", "servantPreviewName");
-      previewServantByCode("", "standaloneMeetingPreviewName");
       const banner = document.getElementById("savedServantBanner");
       if (banner) banner.classList.add("hidden");
     };
 
-    // التحكم في فتح وإغلاق قسم حضور اجتماع الخدام
-    window.toggleMeetingAccordion = function() {
-      const content = document.getElementById("meetingAccordionContent");
-      const label = document.getElementById("meetingToggleLabel");
-      if (content.classList.contains("hidden")) {
-        content.classList.remove("hidden");
-        label.innerText = "▲ إغلاق التسجيل";
-      } else {
-        content.classList.add("hidden");
-        label.innerText = "▼ اضغط لتسجيل كودك";
-      }
-    };
-
-    // تسجيل حضور اجتماع الخدام من جهة الخادم (اختياري)
-    window.servantMeetingCheckIn = async function() {
-      const codeVal = parseInt(document.getElementById("meetingServantCodeInput").value);
-      const feedback = document.getElementById("meetingFeedback");
-
-      if (!codeVal) {
-        feedback.className = "text-xs font-semibold text-red-400";
-        feedback.innerText = "برجاء كتابة كود الخادم القديم.";
-        return;
-      }
-
-      const servant = allServants.find(s => s.code === codeVal);
-      if (!servant) {
-        feedback.className = "text-xs font-semibold text-red-400";
-        feedback.innerText = "هذا الكود غير موجود بقاعدة البيانات! يرجى التأكد من كودك.";
-        return;
-      }
-
-      localStorage.setItem("marmina_saved_servant_code", String(servant.code));
-      restoreSavedServantCode();
-
-      const activeToday = getLocalTodayStr();
-      const recordId = `${activeToday}_${servant.code}`;
-      const docRef = doc(db, "attendance", recordId);
-      const existing = currentAttendance[servant.code] || {};
-
-      await setDoc(docRef, {
-        date: activeToday,
-        servantCode: servant.code,
-        servantName: servant.name,
-        servantClass: servant.class || "",
-        status: existing.status || "Absent",
-        time: existing.time || "-",
-        notes: existing.notes || "",
-        meetingStatus: "Present"
-      }, { merge: true });
-
-      feedback.className = "text-xs font-semibold text-green-400";
-      feedback.innerText = `تم تسجيل حضور اجتماع الخدام بنجاح للخادم: ${servant.name} (${servant.code})!`;
-    };
-
     window.switchPublicTab = function(tab) {
       const checkinTab = document.getElementById('checkinTab');
-      const meetingTab = document.getElementById('meetingTab');
+      const myStatsTab = document.getElementById('myStatsTab');
       const registerTab = document.getElementById('registerTab');
 
       const btnCheckin = document.getElementById('tabBtnCheckin');
-      const btnMeeting = document.getElementById('tabBtnMeeting');
+      const btnMyStats = document.getElementById('tabBtnMyStats');
       const btnRegister = document.getElementById('tabBtnRegister');
 
       checkinTab.classList.add('hidden');
-      if (meetingTab) meetingTab.classList.add('hidden');
+      if (myStatsTab) myStatsTab.classList.add('hidden');
       registerTab.classList.add('hidden');
 
-      btnCheckin.className = 'px-4 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white transition';
-      if (btnMeeting) btnMeeting.className = 'px-4 py-2 rounded-lg font-bold text-sm text-amber-300 hover:text-white bg-amber-950/40 border border-amber-600/30 transition';
-      btnRegister.className = 'px-4 py-2 rounded-lg font-bold text-sm text-gray-300 hover:text-white transition';
+      btnCheckin.className = 'px-5 py-2.5 rounded-xl font-bold text-sm text-gray-300 hover:text-white transition';
+      if (btnMyStats) btnMyStats.className = 'px-5 py-2.5 rounded-xl font-bold text-sm text-amber-300 hover:text-white bg-amber-950/40 border border-amber-600/30 transition';
+      btnRegister.className = 'px-5 py-2.5 rounded-xl font-bold text-sm text-gray-300 hover:text-white transition';
 
       if (tab === 'checkin') {
         checkinTab.classList.remove('hidden');
-        btnCheckin.className = 'px-4 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow transition';
-      } else if (tab === 'meeting') {
-        if (meetingTab) meetingTab.classList.remove('hidden');
-        if (btnMeeting) btnMeeting.className = 'px-4 py-2 rounded-lg font-bold text-sm bg-amber-600 text-white shadow transition';
+        btnCheckin.className = 'px-5 py-2.5 rounded-xl font-bold text-sm bg-emerald-700 text-white shadow transition';
+      } else if (tab === 'myStats') {
+        if (myStatsTab) myStatsTab.classList.remove('hidden');
+        if (btnMyStats) btnMyStats.className = 'px-5 py-2.5 rounded-xl font-bold text-sm bg-amber-600 text-white shadow transition';
+        if (document.getElementById('myStatsCodeInput')?.value) checkMyPersonalStats();
       } else {
         registerTab.classList.remove('hidden');
-        btnRegister.className = 'px-4 py-2 rounded-lg font-bold text-sm bg-green-700 text-white shadow transition';
+        btnRegister.className = 'px-5 py-2.5 rounded-xl font-bold text-sm bg-emerald-700 text-white shadow transition';
       }
     };
 
-    window.servantStandaloneMeetingCheckIn = async function() {
-      const codeVal = parseInt(document.getElementById("standaloneMeetingCodeInput").value);
-      const feedback = document.getElementById("standaloneMeetingFeedback");
+    // استعلام الخادم عن سجل التزامه الشخصي في الشهر الحالي
+    window.checkMyPersonalStats = async function() {
+      const codeVal = parseInt(document.getElementById('myStatsCodeInput').value);
+      const box = document.getElementById('myStatsResultBox');
+      if (!codeVal) {
+        alert("يرجى إدخال كودك أولاً.");
+        return;
+      }
+      const servant = allServants.find(s => s.code === codeVal);
+      if (!servant) {
+        alert("هذا الكود غير مسجل في قاعدة البيانات!");
+        return;
+      }
+
+      const startDate = `${currentMonthStr}-01`;
+      const endDate = `${currentMonthStr}-31`;
+      const q = query(collection(db, "attendance"), where("date", ">=", startDate), where("date", "<=", endDate));
+      const snap = await getDocs(q);
+
+      const myRecords = [];
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        if (d.servantCode === codeVal) myRecords.push(d);
+      });
+      myRecords.sort((a, b) => a.date.localeCompare(b.date));
+
+      const servCount = myRecords.filter(r => r.status === "Present").length;
+      const meetCount = myRecords.filter(r => r.meetingStatus === "Present").length;
+
+      document.getElementById('myStatsName').innerText = servant.name;
+      document.getElementById('myStatsClass').innerText = `الكود: ${servant.code} | الفصل: ${servant.class || '-'}`;
+      document.getElementById('myStatsServiceCount').innerText = `${servCount} مرات`;
+      document.getElementById('myStatsMeetingCount').innerText = `${meetCount} مرات`;
+
+      const listEl = document.getElementById('myStatsDatesList');
+      if (myRecords.length === 0) {
+        listEl.innerHTML = `<p class="text-center text-gray-400">لا توجد أيام حضور مسجلة لك في هذا الشهر حتى الآن.</p>`;
+      } else {
+        listEl.innerHTML = myRecords.map(r => `
+          <div class="flex justify-between items-center py-1 border-b border-gray-800/80">
+            <span class="font-mono text-amber-200">${r.date}</span>
+            <span>
+              ${r.status === 'Present' ? `<span class="text-green-400 font-bold ml-2">✅ خدمة (${r.time || ''})</span>` : ''}
+              ${r.meetingStatus === 'Present' ? `<span class="text-amber-400 font-bold">🤝 اجتماع</span>` : ''}
+            </span>
+          </div>
+        `).join('');
+      }
+      box.classList.remove('hidden');
+    };
+
+    // تسجيل حضور اجتماع الخدام فقط من الكارت الرئيسي
+    window.servantQuickMeetingOnly = async function() {
+      const codeVal = parseInt(document.getElementById("servantCodeInput").value);
+      const feedback = document.getElementById("checkinFeedback");
 
       if (!codeVal) {
-        feedback.className = "text-sm font-semibold text-red-400";
-        feedback.innerText = "برجاء كتابة كود الخادم القديم.";
+        feedback.className = "text-sm font-bold text-red-400";
+        feedback.innerText = "برجاء كتابة كود الخادم أولاً.";
         return;
       }
 
       const servant = allServants.find(s => s.code === codeVal);
       if (!servant) {
-        feedback.className = "text-sm font-semibold text-red-400";
-        feedback.innerText = "هذا الكود غير موجود بقاعدة البيانات! يرجى التأكد من كودك.";
+        feedback.className = "text-sm font-bold text-red-400";
+        feedback.innerText = "هذا الكود غير موجود! سجل بياناتك أولاً في تبويب (تسجيل خادم جديد).";
         return;
       }
 
@@ -1132,10 +1156,9 @@
 
       const activeToday = getLocalTodayStr();
       const recordId = `${activeToday}_${servant.code}`;
-      const docRef = doc(db, "attendance", recordId);
       const existing = currentAttendance[servant.code] || {};
 
-      await setDoc(docRef, {
+      await setDoc(doc(db, "attendance", recordId), {
         date: activeToday,
         servantCode: servant.code,
         servantName: servant.name,
@@ -1146,8 +1169,53 @@
         meetingStatus: "Present"
       }, { merge: true });
 
-      feedback.className = "text-sm font-semibold text-green-400";
-      feedback.innerText = `تم تسجيل حضور اجتماع الخدام بنجاح للخادم: ${servant.name} (${servant.code})!`;
+      feedback.className = "text-sm font-bold text-amber-300";
+      feedback.innerText = `🤝 تم تسجيل حضور اجتماع الخدام بنجاح يا ${servant.name} (كود: ${servant.code})!`;
+    };
+
+    window.servantSelfCheckIn = async function(includeMeeting = false) {
+      const codeVal = parseInt(document.getElementById('servantCodeInput').value);
+      const feedback = document.getElementById('checkinFeedback');
+
+      if (!codeVal) {
+        feedback.className = "text-sm font-bold text-red-400";
+        feedback.innerText = "برجاء كتابة كود الخادم أولاً.";
+        return;
+      }
+
+      const servant = allServants.find(s => s.code === codeVal);
+      if (!servant) {
+        feedback.className = "text-sm font-bold text-red-400";
+        feedback.innerText = "هذا الكود غير موجود! سجل بياناتك أولاً في تبويب (تسجيل خادم جديد).";
+        return;
+      }
+
+      localStorage.setItem("marmina_saved_servant_code", String(servant.code));
+      restoreSavedServantCode();
+
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0];
+      const activeToday = getLocalTodayStr();
+      const recordId = `${activeToday}_${servant.code}`;
+      const existing = currentAttendance[servant.code] || {};
+
+      const newMeetingStatus = includeMeeting ? "Present" : (existing.meetingStatus || "Absent");
+
+      await setDoc(doc(db, "attendance", recordId), {
+        date: activeToday,
+        servantCode: servant.code,
+        servantName: servant.name,
+        servantClass: servant.class || "",
+        status: "Present",
+        time: timeStr,
+        notes: existing.notes || "",
+        meetingStatus: newMeetingStatus
+      }, { merge: true });
+
+      feedback.className = "text-sm font-bold text-green-400";
+      feedback.innerText = includeMeeting
+        ? `🌟 أهلاً بك يا ${servant.name}، تم تسجيل حضور الخدمة (${timeStr}) واجتماع الخدام معاً بنجاح!`
+        : `✅ أهلاً بك يا ${servant.name} (${servant.class})، تم تسجيل حضور الخدمة الساعة (${timeStr}) بنجاح!`;
     };
 
     window.switchAdminSubTab = function(tab) {
@@ -1156,19 +1224,26 @@
         const elem = document.getElementById(`admin${t.charAt(0).toUpperCase() + t.slice(1)}SubTab`);
         const btn = document.getElementById(`adminTabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
         if (elem) elem.classList.add('hidden');
-        if (btn) btn.className = 'bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold';
+        if (btn) btn.className = 'bg-gray-800 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold';
       });
 
       const activeElem = document.getElementById(`admin${tab.charAt(0).toUpperCase() + tab.slice(1)}SubTab`);
       const activeBtn = document.getElementById(`adminTabBtn${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
       if (activeElem) activeElem.classList.remove('hidden');
-      if (activeBtn) activeBtn.className = 'bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow';
+      if (activeBtn) activeBtn.className = 'bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow';
 
       if (tab === 'monthly') loadMonthlyAttendance();
       if (tab === 'servantsList') renderFullServantsListTable();
     };
 
-    // تحديث قوائم الفصول المنسدلة واقتراحات الأكواد
+    window.filterByVisitationNeeded = function() {
+      const statusSel = document.getElementById('adminStatusFilter');
+      if (statusSel) {
+        statusSel.value = statusSel.value === 'NEEDS_VISITATION' ? 'ALL' : 'NEEDS_VISITATION';
+        renderAdminAttendanceTable();
+      }
+    };
+
     function populateDynamicClassFilters() {
       const uniqueClasses = Array.from(new Set(allServants.map(s => (s.class || '').trim()).filter(Boolean))).sort();
       const filterIds = ['adminClassFilter', 'monthlyClassFilter'];
@@ -1199,11 +1274,12 @@
       }
     }
 
-    // حساب الغياب المتكرر لآخر أيام خدمة مسجلة لتنبيهات الافتقاد
+    // حساب الغياب المتكرر لآخر 60 يوماً لتنبيهات الافتقاد
     async function computeRecentAbsenceStreaks() {
       try {
-        const startMonth = currentMonthStr + "-01";
-        const q = query(collection(db, "attendance"), where("date", ">=", startMonth));
+        const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000);
+        const startStr = `${sixtyDaysAgo.getFullYear()}-${String(sixtyDaysAgo.getMonth() + 1).padStart(2, '0')}-${String(sixtyDaysAgo.getDate()).padStart(2, '0')}`;
+        const q = query(collection(db, "attendance"), where("date", ">=", startStr));
         const snap = await getDocs(q);
         const datesSet = new Set();
         const byDateAndServant = {};
@@ -1217,7 +1293,7 @@
           }
         });
 
-        const sortedDates = Array.from(datesSet).sort().reverse(); // من الأحدث للأقدم
+        const sortedDates = Array.from(datesSet).sort().reverse();
         recentAbsenceStreaks = {};
 
         if (sortedDates.length >= 2) {
@@ -1278,57 +1354,13 @@
       }
     };
 
-    window.servantSelfCheckIn = async function() {
-      const codeVal = parseInt(document.getElementById('servantCodeInput').value);
-      const alsoMeeting = document.getElementById('alsoCheckInMeeting')?.checked || false;
-      const feedback = document.getElementById('checkinFeedback');
-
-      if (!codeVal) {
-        feedback.className = "text-sm font-semibold text-red-400";
-        feedback.innerText = "برجاء كتابة كود الخادم القديم.";
-        return;
-      }
-
-      const servant = allServants.find(s => s.code === codeVal);
-      if (!servant) {
-        feedback.className = "text-sm font-semibold text-red-400";
-        feedback.innerText = "هذا الكود غير موجود! سجل بياناتك أولاً في تبويب (تسجيل بياناتي).";
-        return;
-      }
-
-      localStorage.setItem("marmina_saved_servant_code", String(servant.code));
-      restoreSavedServantCode();
-
-      const now = new Date();
-      const timeStr = now.toTimeString().split(' ')[0];
-      const activeToday = getLocalTodayStr();
-      const recordId = `${activeToday}_${servant.code}`;
-      const existing = currentAttendance[servant.code] || {};
-
-      const newMeetingStatus = alsoMeeting ? "Present" : (existing.meetingStatus || "Absent");
-
-      await setDoc(doc(db, "attendance", recordId), {
-        date: activeToday,
-        servantCode: servant.code,
-        servantName: servant.name,
-        servantClass: servant.class || "",
-        status: "Present",
-        time: timeStr,
-        notes: existing.notes || "",
-        meetingStatus: newMeetingStatus
-      }, { merge: true });
-
-      feedback.className = "text-sm font-semibold text-green-400";
-      feedback.innerText = alsoMeeting
-        ? `أهلاً بك يا ${servant.name}، تم تسجيل حضور الخدمة (${timeStr}) واجتماع الخدام معاً بنجاح!`
-        : `أهلاً بك يا ${servant.name} (${servant.class})، تم تسجيل حضور الخدمة في تمام الساعة (${timeStr}) بنجاح!`;
-    };
-
     window.handleSelfRegister = async function(e) {
       e.preventDefault();
       const code = parseInt(document.getElementById('regCode').value);
       const name = document.getElementById('regName').value.trim();
-      const sClass = document.getElementById('regClass').value.trim();
+      const selVal = document.getElementById('regClassSelect').value;
+      const customVal = document.getElementById('regClassCustom').value.trim();
+      const sClass = selVal === "CUSTOM" ? customVal : selVal;
       const phone = document.getElementById('regPhone').value.trim();
       const job = document.getElementById('regJob').value.trim();
       const father = document.getElementById('regFather').value.trim();
@@ -1353,8 +1385,9 @@
         });
         localStorage.setItem("marmina_saved_servant_code", String(code));
         feedback.className = "text-center text-sm font-semibold text-green-400";
-        feedback.innerText = `تم تسجيل بيانات الخادم: ${name} بكوده القديم (${code}) بنجاح!`;
+        feedback.innerText = `✅ تم تسجيل بيانات الخادم: ${name} بكوده (${code}) بنجاح!`;
         document.getElementById('selfRegisterForm').reset();
+        document.getElementById('regClassCustom').classList.add('hidden');
         document.getElementById('codeAvailabilityMsg').innerText = '';
         await loadServantsData();
       } catch (err) {
@@ -1444,7 +1477,6 @@
       }
     };
 
-    // اشتراك لحظي (Real-time onSnapshot) لكشف الحضور اليومي
     window.subscribeToAttendanceForDate = function() {
       if (attendanceUnsubscribe) {
         attendanceUnsubscribe();
@@ -1465,12 +1497,20 @@
       });
     };
 
-    // دالة متوافقة لو تم استدعاؤها يدوياً
     window.loadAttendanceForDate = async function() {
       subscribeToAttendanceForDate();
     };
 
-    // إرجاع القائمة المفلترة حسب بحث وفصل وحالة الجدول اليومي
+    function formatWhatsAppLink(phone, name) {
+      if (!phone) return "";
+      let digits = phone.replace(/\D/g, "");
+      if (digits.startsWith("01") && digits.length === 11) {
+        digits = "2" + digits;
+      }
+      const msg = encodeURIComponent(`سلام ونعمة يا ${name}، بنطمن عليك من خدمة كنيسة الشهيد العظيم مارمينا ☦`);
+      return `https://wa.me/${digits}?text=${msg}`;
+    }
+
     function getFilteredDailyServants() {
       const search = (document.getElementById('adminSearchInput')?.value || '').trim().toLowerCase();
       const classFilter = document.getElementById('adminClassFilter')?.value || 'ALL';
@@ -1521,7 +1561,12 @@
         if (streak >= 2) visitationAlertCount++;
 
         const visitationBadge = streak >= 2
-          ? `<span class="inline-block mr-1.5 px-1.5 py-0.5 text-[10px] bg-red-900/80 text-red-200 border border-red-600/50 rounded font-bold" title="غائب آخر ${streak} مرات مسجلة">⚠️ افتقاد (${streak})</span>`
+          ? `<span class="inline-block mr-1.5 px-2 py-0.5 text-[10px] bg-red-900/90 text-red-200 border border-red-500/50 rounded-full font-bold" title="غائب آخر ${streak} مرات مسجلة">⚠️ افتقاد (${streak})</span>`
+          : '';
+
+        const waUrl = formatWhatsAppLink(s.phone, s.name);
+        const waBtn = waUrl
+          ? `<a href="${waUrl}" target="_blank" class="inline-block mr-1 bg-green-800/80 hover:bg-green-700 text-green-100 px-1.5 py-0.5 rounded text-[10px]" title="مراسلة واتساب (${s.phone})">💬</a>`
           : '';
 
         const tr = document.createElement('tr');
@@ -1530,11 +1575,11 @@
           <td class="p-3 font-bold font-mono text-amber-300">${s.code}</td>
           <td class="p-3 font-bold text-white">
             ${s.name}
+            ${waBtn}
             ${visitationBadge}
           </td>
           <td class="p-3 text-emerald-300 font-semibold">${s.class || '-'}</td>
           
-          <!-- حضور الخدمة -->
           <td class="p-3 text-center">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isServicePresent ? 'bg-green-700 text-white' : 'bg-red-900/60 text-red-300'}">
               ${isServicePresent ? 'Present' : 'Absent'}
@@ -1554,7 +1599,6 @@
             </div>
           </td>
 
-          <!-- اجتماع الخدام -->
           <td class="p-3 text-center">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isMeetingPresent ? 'bg-amber-600 text-white' : 'bg-gray-800 text-gray-400'}">
               ${isMeetingPresent ? 'حاضر' : 'غائب'}
@@ -1567,15 +1611,14 @@
             </button>
           </td>
 
-          <!-- ملاحظات اليوم -->
           <td class="p-3">
             <div class="flex items-center gap-1">
               <input type="text" id="noteInput_${s.code}" value="${(record.notes || '').replace(/"/g, '&quot;')}" 
-                     placeholder="ملاحظة / عذر..."
+                     placeholder="اعتذر / مريض / تأخير..."
                      onkeydown="if(event.key==='Enter') adminSaveNote(${s.code})"
-                     class="w-28 sm:w-36 px-2 py-1 bg-gray-900 border border-gray-700 rounded text-[11px] text-white outline-none focus:border-amber-500">
+                     class="w-32 px-2 py-1 bg-black/70 border border-gray-700 rounded-lg text-[11px] text-white outline-none focus:border-amber-500">
               <button onclick="adminSaveNote(${s.code})" title="حفظ الملاحظة"
-                      class="bg-slate-700 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[11px] font-bold transition">
+                      class="bg-slate-700 hover:bg-emerald-700 text-white px-2 py-1 rounded-lg text-[11px] font-bold transition">
                 💾
               </button>
             </div>
@@ -1678,7 +1721,7 @@
       }, { merge: true });
     };
 
-    // ================= 2.3 دالة التقرير الشهري الكاملة (التي كانت مفقودة) =================
+    // ================= 2.3 دالة التقرير الشهري الكاملة =================
     window.loadMonthlyAttendance = async function() {
       const monthVal = document.getElementById("monthlyReportMonth")?.value || currentMonthStr;
       const startDate = `${monthVal}-01`;
@@ -1778,17 +1821,7 @@
       });
     };
 
-    // ================= 2.4 إدارة وتعديل وإضافة الخدام + واتساب افتقاد =================
-    function formatWhatsAppLink(phone, name) {
-      if (!phone) return "";
-      let digits = phone.replace(/\D/g, "");
-      if (digits.startsWith("01") && digits.length === 11) {
-        digits = "2" + digits;
-      }
-      const msg = encodeURIComponent(`سلام ونعمة يا ${name}، بنطمن عليك من خدمة كنيسة الشهيد العظيم مارمينا ☦`);
-      return `https://wa.me/${digits}?text=${msg}`;
-    }
-
+    // ================= 2.4 إدارة وتعديل وإضافة الخدام =================
     window.renderFullServantsListTable = function() {
       const search = (document.getElementById('servantsListSearchInput')?.value || '').trim().toLowerCase();
       const tbody = document.getElementById('fullServantsListTableBody');
@@ -1822,11 +1855,11 @@
           <td class="p-3 text-center">
             <div class="flex justify-center gap-1.5">
               <button onclick="openEditServantModal(${s.code})" 
-                      class="bg-blue-700 hover:bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold transition">
+                      class="bg-blue-700 hover:bg-blue-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold transition">
                 ✏️ تعديل
               </button>
-              <button onclick="confirmRemoveServant(${s.code}, '${s.name.replace(/'/g, "\'")}')" 
-                      class="bg-red-700/80 hover:bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold transition">
+              <button onclick="confirmRemoveServant(${s.code})" 
+                      class="bg-red-700/80 hover:bg-red-600 text-white px-2.5 py-1 rounded-lg text-xs font-bold transition">
                 حذف 🗑
               </button>
             </div>
@@ -1842,15 +1875,15 @@
       const codeInput = document.getElementById('modalServantCode');
 
       if (code === null || code === undefined) {
-        title.innerText = "إضافة خادم جديد للنظام";
+        title.innerText = "➕ إضافة خادم جديد للنظام";
         codeInput.disabled = false;
         document.getElementById('editServantForm').reset();
       } else {
         const s = allServants.find(x => x.code === code);
         if (!s) return;
-        title.innerText = `تعديل بيانات الخادم: ${s.name}`;
+        title.innerText = `✏️ تعديل بيانات الخادم: ${s.name}`;
         codeInput.value = s.code;
-        codeInput.disabled = true; // الكود الأساسي ثابت عند التعديل
+        codeInput.disabled = true;
         document.getElementById('modalServantName').value = s.name || '';
         document.getElementById('modalServantClass').value = s.class || '';
         document.getElementById('modalServantPhone').value = s.phone || '';
@@ -1883,7 +1916,9 @@
       await loadServantsData();
     };
 
-    window.confirmRemoveServant = async function(code, name) {
+    window.confirmRemoveServant = async function(code) {
+      const s = allServants.find(x => x.code === code);
+      const name = s ? s.name : code;
       if (!confirm(`هل أنت متأكد من إنهاء خدمة الخادم (${name} - كود: ${code}) وإزالته نهائياً من قاعدة بيانات الخدمة؟`)) {
         return;
       }
@@ -2020,7 +2055,6 @@
         headers.map(escapeCell).join(","),
         ...rows.map(r => r.map(escapeCell).join(","))
       ];
-      // إضافة UTF-8 BOM لكي يفتح في Excel باللغة العربية بدون رموز غريبة
       const blob = new Blob(["\uFEFF" + csvLines.join("\r\n")], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -2163,7 +2197,6 @@
       }
     }
 
-    // 1. تقرير اليوم PDF (يحترم فلتر الفصل لو الأمين مختار فصل معين)
     window.exportCurrentDayPDF = async function() {
       const targetServants = getFilteredDailyServants();
       if (targetServants.length === 0) {
@@ -2229,7 +2262,6 @@
       await generatePdfFromElement("pdfContainer", `Daily_Attendance_${selectedDate}.pdf`, false);
     };
 
-    // 2. تقرير الحضور الشهري PDF
     window.exportMonthlyPDF = async function() {
       const monthVal = document.getElementById("monthlyReportMonth").value || currentMonthStr;
       if (monthlyRecords.length === 0 && monthlyMeetingDates.length === 0) {
@@ -2279,7 +2311,6 @@
       await generatePdfFromElement("monthlyPdfContainer", `Monthly_Attendance_${monthVal}.pdf`, true);
     };
 
-    // 3. تقرير خادم محدد PDF
     window.exportSingleServantPDF = async function() {
       if (!currentSingleServantData) return;
       const data = currentSingleServantData;
@@ -2316,7 +2347,6 @@
       await generatePdfFromElement("singleServantPdfContainer", `Attendance_${data.servant.code}_${data.start}_to_${data.end}.pdf`, false);
     };
 
-    // تشغيل النظام وجلب البيانات الأولية بأمان تام وبدون تجميد
     async function startApp() {
       try { await initAdminCredentials(); } catch (e) { console.warn("Admin creds error:", e); }
       try { await loadTimingConfig(); } catch (e) { console.warn("Timing config error:", e); }
